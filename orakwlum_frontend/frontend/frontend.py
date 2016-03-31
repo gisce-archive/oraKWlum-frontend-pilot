@@ -16,7 +16,7 @@ class Frontend(object):
     #    '.json': 'application/x-web-app-manifest+json',
     #});
 
-    def __init__(self, path):
+    def __init__(self, path="orakwlum_frontend/frontend/reports"):
         self.thread = threading.Thread(target=self.start, args=())
         self.thread.daemon = True
         self.thread.start()
@@ -32,7 +32,7 @@ class Frontend(object):
     def start(self):
         try:
             self.httpd = SocketServer.TCPServer(("", self.PORT), self.Handler)
-            print "Web server started at port", self.PORT
+            print " * Frontend running on http://127.0.0.1:{}".format(self.PORT)
             self.httpd.serve_forever()
         except:
             self.shutdown()
