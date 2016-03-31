@@ -2,3 +2,4 @@
 __author__ = 'XaviTorello'
 
 from orakwlum_frontend.api import *
+from orakwlum_frontend.frontend import *
