@@ -6,11 +6,6 @@ Show all the proposals and provides an easy way to compare the different scenari
 Includes a REST Api to consume the Proposals from Mongo
 
 
-## Screenshots
-
-![Prediction1](https://raw.githubusercontent.com/gisce/oraKWlum-frontend/master/screenshots/demo.png)
-
-
 ## Usage
 
 ### Adapt your settings
@@ -28,17 +23,21 @@ MONGO_DBNAME = 'orakwlum'
 ### Run the API
 
 ```
-from orakwlum_frontend.api import *
+from orakwlum_frontend import *
 
 api = Api(settings="PATH_TO_YOUR/settings.py")
+frontend = Frontend()
+
 ```
 
 
 ### Call the web frontend
 
-Open your favourite browser and call the frontend:
+Open your favourite browser and **enjoy** at [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
-```
-reports/index.html
-```
 
+
+
+## Screenshots
+
+![Prediction1](https://raw.githubusercontent.com/gisce/oraKWlum-frontend/master/screenshots/demo.png)
