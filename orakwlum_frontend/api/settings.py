@@ -11,6 +11,7 @@ MONGO_DBNAME = 'orakwlum'
 RESOURCE_METHODS = ['GET']
 ITEM_METHODS = ['GET']
 
+X_DOMAINS = '*'
 
 schema = {
     # Schema definition, based on Cerberus grammar. Check the Cerberus project
