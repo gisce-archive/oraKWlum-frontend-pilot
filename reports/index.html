@@ -23,6 +23,23 @@
     <script src="lib/nv.d3.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="lib/report.js"></script>
+
+
+    <style>
+        #llistat_historic ul li {
+            list-style: none;
+            margin-left: 0;
+        }
+        #llistat_historic ul  {
+            padding-left: 0px;
+            text-align: center;
+        }
+
+        .grafic {
+            height: 350px;
+        }
+    </style>
+
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
@@ -38,7 +55,7 @@
           </a>
           <ul class="treeview-menu">
             <li><a target="_blank" href="report.html"><i class="fa fa-circle-o"></i> Senzill [v1]</a></li>
-            <li><a href="./tree_.html"><i class="fa fa-circle-o"></i> Amb històric [v2]</a></li>
+            <li><a href=""><i class="fa fa-circle-o"></i> Amb històric [v2]</a></li>
           </ul>
         </li>
       </ul>
@@ -63,7 +80,7 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Última execució</h3>
+              <h3 class="box-title">Última proposta</h3>
 
               <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
@@ -76,7 +93,7 @@
               </div>
 
 
-                <div id="execucio_ultima" class="box-body" style="height: 250px";>
+                <div id="execucio_ultima" class="box-body grafic">
                   <svg></svg>
                 </div>
 
@@ -114,7 +131,10 @@
               <h3 class="box-title">Històric</h3>
             </div>
             <!-- /.box-header -->
-            <div id="tree_llistat" class="box-body no-padding">
+            <div id="llistat_historic" class="box-body no-padding">
+                <ul>
+
+                </ul>
             </div>
 
             <div class="box-tools text-center">
@@ -150,19 +170,7 @@
 
 <script>
     $(document).ready(function () {
-
          get_proposals();
-
-
-
-        //$("#tree_llistat").html(get_hist());
-
-        //Select the first entry of tree_llistat
-        first = $( '#tree_llistat > table > tbody > tr:nth-child(2) > td:nth-child(1) > a').text();
-
-        //Create the latest chart
-        append_chart("#execucio_ultima", first);
-
     });
 </script>
 
