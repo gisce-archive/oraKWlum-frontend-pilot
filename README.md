@@ -6,3 +6,4 @@ Show all the proposals and provides an easy way to compare the different scenari
 
 ## Screenshots
 
+![Prediction1](https://raw.githubusercontent.com/gisce/oraKWlum-frontend/imp_api/screenshots/demo.png)
