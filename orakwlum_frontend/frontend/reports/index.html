@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet" href="./lib/lte/AdminLTE.min.css">
+  <link rel="stylesheet" href="./lib/lte/plugins/iCheck/all.css">
+
   <!-- TODO Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="./lib/lte/_all-skins.min.css">
@@ -34,26 +36,29 @@
             padding-left: 0px;
             text-align: center;
         }
-
         .grafic {
             padding-top: 25px;
             padding-bottom: 25px;
         }
-
         .grafic svg {
             height: 350px;
         }
-
         .grafic_title {
             text-align: center;
         }
+
+
     </style>
 
+    <datalist id=chart_types >
+       <option> Area
+       <option> Line
+       <option> Bar
+    </datalist>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
 <div class="wrapper">
-
   <aside class="main-sidebar" >
     <section class="sidebar">
       <ul class="sidebar-menu">
@@ -176,9 +181,35 @@
 <script src="../../plugins/fastclick/fastclick.js"></script>
 <script src="./lib/lte/app.min.js"></script>
 
+<script src="./lib/lte/plugins/iCheck/icheck.min.js"></script>
+
+<script>
+
+
+
+        //iCheck for checkbox and radio inputs
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+
+
+</script>
+
 <script>
     $(document).ready(function () {
-         get_proposals();
+        get_proposals();
     });
 </script>
 
