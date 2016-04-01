@@ -3,7 +3,6 @@ __author__ = 'XaviTorello'
 
 ## Settings file for Eve
 
-
 MONGO_HOST = 'localhost'
 MONGO_PORT = 27017
 MONGO_DBNAME = 'orakwlum'
@@ -22,19 +21,15 @@ schema = {
         'maxlength': 10,
         'unique': True,
     },
-
     'scenarios': {
         'type': 'list'
     },
-
     'dates': {
         'type': 'list'
     }
 }
 
-
 proposals = {
-
     'item_title': 'Proposal',
 
     # by default the standard item entry point is defined as
@@ -52,9 +47,7 @@ proposals = {
 
     # most global settings can be overridden at resource level
     'resource_methods': ['GET'],
-
     'schema': schema
-
 }
 
 DOMAIN = {'proposals': proposals}
