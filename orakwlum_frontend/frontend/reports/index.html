@@ -90,78 +90,77 @@
     </section>
 
     <section class="content">
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Última proposta</h3>
+        <div class="row">
+            <div class="col-xs-11">
 
-              <div class="box-tools">
-                <div class="input-group input-group-sm" style="width: 150px;">
-                  <input type="text" name="table_search" class="form-control pull-right" placeholder="Cercar">
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="box">
+                    <div class="box-header">
+                      <h3 class="box-title">Principal</h3>
 
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                      <div class="box-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                          <input type="text" name="table_search" class="form-control pull-right" placeholder="Cercar">
+
+                          <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                          </div>
+                        </div>
+                      </div>
+
+
+                        <div id="execucio_ultima" class="box-body grafic">
+                        </div>
+
+                    </div>
+
+
+                    <div class="box-body table-responsive no-padding">
+                    </div>
+
                   </div>
                 </div>
               </div>
 
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="box">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">Comparativa <span id="data_prev"></span></h3>
+                    </div>
 
-                <div id="execucio_ultima" class="box-body grafic">
+                    <div id="execucio" class="box-body">
+                    </div>
+
+                  </div>
                 </div>
 
+              </div>
             </div>
-            <div class="box-body table-responsive no-padding">
+
+
+            <div class="col-md-1">
+              <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">Propostes</h3>
+                </div>
+                <!-- /.box-header -->
+                <div id="llistat_historic" class="box-body no-padding">
+                    <ul>
+                    </ul>
+                </div>
+
+                <div class="box-tools text-center">
+                    <ul class="pagination pagination-sm no-margin ">
+                      <li><a id="prevPage" href="javascript:getPrevPage();">&laquo;</a></li>
+                      <li><a id="currentPage">1</a></li>
+                      <li><a id="nextPage" href="javascript:getNextPage();">&raquo;</a></li>
+                    </ul>
+                </div>
+              </div>
             </div>
-          </div>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-11">
-          <div class="box">
-            <div class="box-header with-border">
-              <h3 class="box-title">Propostes <span id="data_prev"></span></h3>
-            </div>
-            <div id="execucio" class="box-body">
-            </div>
-
-            <div class="box-footer clearfix">
-              <ul class="pagination pagination-sm no-margin pull-right">
-                <li><a href="#">&laquo;</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">&raquo;</a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-1">
-          <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Històric</h3>
-            </div>
-            <!-- /.box-header -->
-            <div id="llistat_historic" class="box-body no-padding">
-                <ul>
-
-                </ul>
-            </div>
-
-            <div class="box-tools text-center">
-                <ul class="pagination pagination-sm no-margin ">
-                  <li><a href="#">&laquo;</a></li>
-                  <li><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">&raquo;</a></li>
-                </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </section>
   </div>
 
@@ -209,7 +208,7 @@
 
 <script>
     $(document).ready(function () {
-        get_proposals();
+        get_proposals(true);
     });
 </script>
 

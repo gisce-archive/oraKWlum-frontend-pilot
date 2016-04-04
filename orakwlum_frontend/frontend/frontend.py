@@ -23,6 +23,7 @@ class Frontend(object):
         self.thread.start()
         self.path = path
         self.PORT = port
+        self.httpd = None
 
         #change working dir
         os.chdir(path)

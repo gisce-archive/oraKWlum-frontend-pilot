@@ -1,4 +1,5 @@
 
+
 $.urlParam = function(name){
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
     if (results==null){
@@ -8,6 +9,18 @@ $.urlParam = function(name){
        return results[1] || 0;
     }
 }
+
+
+var max_elements = 8;
+var currentPage = $.urlParam("page");
+var maxPage = currentPage;
+
+if (!currentPage)
+    currentPage=1;
+
+var days_in_week = ["Diumenge", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte"];
+var days_in_week_lite = ["Dg", "Dl", "Dm", "Dx", "Dj", "Dv", "Ds"];
+
 
 
 function create_chartxx(ON, scenarios) {
@@ -369,14 +382,15 @@ function create_chart_multibar (nom, scenarios, div) {
 
 }
 
-
-function append_hist(name){
-    $('#llistat_historic ul').append("<li><a href='javascript:append_chart(\"#execucio\", \""+ name + "\");'>"+ convert_date_to_title(name,1)+"</a></li>");
+function clear_hist(){
+    $('#llistat_historic ul').empty();
 }
 
+function append_hist(name){
+    $('#llistat_historic ul').append("<li><a href='javascript:append_chart(\"#execucio\", \""+ name + "\");' >"
+        + convert_date_to_title(name,1)+"</a></li>");
+}
 
-days_in_week = ["Diumenge", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte"];
-days_in_week_lite = ["Dg", "Dl", "Dm", "Dx", "Dj", "Dv", "Ds"];
 
 //From a string like "160401_160402" convert it to a Chart Title
 function convert_date_to_title (string, lite){
@@ -400,35 +414,59 @@ function convert_date_to_title (string, lite){
 }
 
 
+function validateNumber(num){
+    return ($.isNumeric(num) && num >0);
+}
+
 //Fetch all proposals and initializates the right history menu
 //Also autoload the last execution
-function get_proposals(){
+function get_proposals(setMain){
+
+    if (setMain == undefined)
+        setMain = false;
+
     $.ajax({
-        url: 'http://127.0.0.1:5000/proposals?sort=-_id',
+        url: 'http://127.0.0.1:5000/proposals?sort=-_id&max_results='+ max_elements + '&page='+ currentPage,
         dataType: 'json',
 
         success: function (data, status, jqXHR) {
+
             proposals = [];
             parentDiv='#execucio_ultima';
+
+            if (!validateNumber(currentPage))
+                return false;
+
+            $("#currentPage").html(currentPage);
+
+
+            clear_hist();
 
             $.each(data._items, function (index,value) {
                 append_hist(value.name);
             });
 
+            maxPage = (Math.round(data._meta.total/max_elements));
+
+            validatePaginator(currentPage, maxPage);
+
             //autoload the last element on execucio_ultima div
 
-            last = data._items[0].name;
-            //last = $( '#llistat_historic > ul > li:last-child > a').href();
 
-            child_div = "chart_" + last;
+            if (setMain) {
+                $(parentDiv).empty();
 
-            $(parentDiv).append("<h3 class='grafic_title'>" + convert_date_to_title(last) + "</h3>")
-            $(parentDiv).append(graphic_type_selector(last));
-            $(parentDiv).append("<div id='" + child_div + "'><svg class='nvd3-svg'></svg></div>")
-            create_chart(parentDiv, last);
+                last = data._items[0].name;
+                //last = $( '#llistat_historic > ul > li:last-child > a').href();
+                child_div = "chart_" + last;
 
-            $("input[name='" + last + "']").change(radioValueChanged);
+                $(parentDiv).append("<h3 class='grafic_title'>" + convert_date_to_title(last) + "</h3>");
+                $(parentDiv).append(graphic_type_selector(last));
+                $(parentDiv).append("<div id='" + child_div + "'><svg class='nvd3-svg'></svg></div>");
+                create_chart(parentDiv, last);
 
+                $("input[name='" + last + "']").change(radioValueChanged);
+            }
         },
 
         error: function (jqXHR, status) {
@@ -437,6 +475,7 @@ function get_proposals(){
     });
 
 }
+
 
 function create_radio_box(id, value, text, selected){
     checked = (selected)? "checked" : "";
@@ -518,9 +557,7 @@ function append_chart(div, id, type){
         $(div).append(graphic_type_selector(id));
         $(div).append("<div id=" + child_div +" class='grafic'><svg class='nvd3-svg'></svg></div></div>");
 
-
         $("input[name='" + id + "']").change(radioValueChanged);
-
     }
 
     //insert the chart
@@ -557,4 +594,40 @@ function create_chart(div, id, type){
             $(div).append("KO!!!");
         }
     });
+}
+
+
+function validatePaginator(current,max) {
+    if (current==max) {
+        $("#nextPage").hide();
+        $("#prevPage").show();
+    }
+
+    else if (current==1) {
+        $("#nextPage").show();
+        $("#prevPage").hide();
+    }
+
+    else {
+        $("#nextPage").show();
+        $("#prevPage").show();
+    }
+
+    console.log(current);
+    console.log(max);
+}
+
+function getNextPage() {
+    currentPage++;
+    validatePaginator(currentPage,maxPage);
+    get_proposals();
+}
+
+function getPrevPage(max) {
+
+    if (currentPage>1) {
+        validatePaginator(currentPage,maxPage);
+        currentPage--;
+        get_proposals();
+    }
 }
