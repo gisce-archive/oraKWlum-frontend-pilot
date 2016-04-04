@@ -27,7 +27,7 @@ function create_chartxx(ON, scenarios) {
         data_csv.push([date, ""+value.sum_consumption_proposal]);
     });
 
-    console.log(data_csv);
+   // console.log(data_csv);
 
    // var data_csv = scenarios[0].prediction;
     var data_csv_pred = data_csv;
@@ -70,7 +70,7 @@ function create_chartxx(ON, scenarios) {
         ;
         data = dades(data_csv, data_csv_pred);
 
-        console.log("en",data);
+    //    console.log("en",data);
 
         d3.select(ON).append('svg')
             .datum(data)
@@ -157,7 +157,7 @@ function create_chart_multiline (nom, scenarios, div, area) {
         };
     });
 
-    console.log('data scenarios',data_scenarios);
+   // console.log('data scenarios',data_scenarios);
 
     var chart;
 
@@ -198,9 +198,6 @@ function create_chart_multiline (nom, scenarios, div, area) {
         chart.dispatch.on('renderEnd', function(){
             nv.log('Render Complete');
         });
-
-        //Erase previous chart
-        $(div + ' svg').empty();
 
         d3.select(div + ' svg')
             .datum(data_scenarios)
@@ -245,7 +242,7 @@ function create_chart_multibar (nom, scenarios, div) {
         };
     });
 
-    console.log('data scenarios',data_scenarios);
+//    console.log('data scenarios',data_scenarios);
 
     var chart;
     nv.addGraph(function() {
@@ -278,9 +275,6 @@ function create_chart_multibar (nom, scenarios, div) {
             nv.log('Render Complete');
         });
 
-
-        //Erase previous chart
-        $(div + ' svg').empty();
 
         d3.select(div + ' svg')
             .datum(data_scenarios)
@@ -343,21 +337,23 @@ function get_proposals(){
 
         success: function (data, status, jqXHR) {
             proposals = [];
+            parentDiv='#execucio_ultima';
 
             $.each(data._items, function (index,value) {
                 append_hist(value.name);
             });
-
 
             //autoload the last element on execucio_ultima div
 
             last = data._items[0].name;
             //last = $( '#llistat_historic > ul > li:last-child > a').href();
 
-            $("#execucio_ultima").append("<h3 class='grafic_title'>" + convert_date_to_title(last) + "</h3>")
-            $("#execucio_ultima").append(graphic_type_selector(last));
-            $("#execucio_ultima").append("<svg class='nvd3-svg'></svg>")
-            create_chart("#execucio_ultima", last);
+            child_div = "chart_" + last;
+
+            $(parentDiv).append("<h3 class='grafic_title'>" + convert_date_to_title(last) + "</h3>")
+            $(parentDiv).append(graphic_type_selector(last));
+            $(parentDiv).append("<div id='" + child_div + "'><svg class='nvd3-svg'></svg></div>")
+            create_chart(parentDiv, last);
 
             $("input[name='" + last + "']").change(radioValueChanged);
 
@@ -431,7 +427,10 @@ function reset_chart(div, id, type){
 
     //$(div + " svg").html("LOL");
 
-    console.log (   $("#"+child_div + " svg").html()  );
+    //console.log (   $("#"+child_div + " svg").html()  );
+
+    //Delete previous chart
+    $("#"+child_div + " svg").empty();
 
     create_chart("#"+child_div,id,type);
     //alert("change");
@@ -465,7 +464,7 @@ function create_chart(div, id, type){
         dataType: 'json',
 
         success: function (data, status, jqXHR) {
-            console.log(div)
+          //  console.log(div)
 
             switch(type) {
                 default:
