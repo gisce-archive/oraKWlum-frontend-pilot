@@ -138,6 +138,7 @@ function create_chart_multiarea (nom, scenarios, div) {
 
 function create_chart_multiline (nom, scenarios, div, area) {
 
+    var min=null, max=0;
     var data_scenarios  = new d3.range(0,scenarios.length).map(function(d,i) {
         //console.dir(scenarios[i]);
         scenario = scenarios[i]
@@ -147,18 +148,28 @@ function create_chart_multiline (nom, scenarios, div, area) {
             classed: 'dashed',
             key: scenario['name'],
             values: new d3.range(0,scenario['prediction'].length).map( function(f,j) {
+                value = scenario['prediction'][j]['sum_consumption_proposal'];
+
+                if (!min)  min=value;  //take the first value of the current scope as a min
 
                 hour = new Date(scenario['prediction'][j]['_id']); //.replace("GMT","UTC"));
 
                 hour = new Date(hour - (2 * 60 *60*1000));  //localtime to UTC
 
+                min = Math.min(min, value);
+                max = Math.max(max, value);
+
                 return {
-                    y: scenario['prediction'][j]['sum_consumption_proposal'],
+                    y: value,
                     x: hour
                 }
             })
         };
     });
+
+
+    console.log("min: "+min);
+    console.log("max: "+max);
 
    // console.log('data scenarios',data_scenarios);
 
@@ -173,17 +184,19 @@ function create_chart_multiline (nom, scenarios, div, area) {
                 transitionDuration: 300,
                 useInteractiveGuideline: true
             })
+            .yDomain([min, max]);
+
         ;
 
 
 
         chart.margin({bottom: 100, left: 70});
+        chart.xAxis.axisLabelDistance(0);
 
 
         chart.xAxis
             .showMaxMin(false)
             .axisLabel("Hores (h)")
-            .axisLabelDistance(45)
             .rotateLabels(45)
 
 
@@ -202,6 +215,7 @@ function create_chart_multiline (nom, scenarios, div, area) {
 
 
         chart.yAxis
+            .axisLabelDistance(10)
             .axisLabel('Energia (kw)')
             .showMaxMin(true)
             .tickFormat(function (d) {
@@ -212,6 +226,10 @@ function create_chart_multiline (nom, scenarios, div, area) {
             })
 
         ;
+
+
+
+
 
         chart.dispatch.on('renderEnd', function(){
             nv.log('Render Complete');
@@ -244,20 +262,30 @@ function create_chart_multiline (nom, scenarios, div, area) {
 
 function create_chart_multibar (nom, scenarios, div) {
 
+    var min=null, max=0;
+
     var data_scenarios  = new d3.range(0,scenarios.length).map(function(d,i) {
         scenario = scenarios[i]
+
         return {
             key: scenario['name'],
             values: new d3.range(0,(scenario['prediction'].length) ).map( function(f,j) {
+
+                value = scenario['prediction'][j]['sum_consumption_proposal'];
+
+                if (!min)  min=value;  //take the first value of the current scope as a min
 
                 hour = new Date(scenario['prediction'][j]['_id']); //.replace("GMT","UTC"));
 
                 hour = new Date(hour - (2 * 60 *60*1000));  //localtime to UTC
 
+                min = Math.min(min, value);
+                max = Math.max(max, value);
+
                 //console.log(hour);
 
                 return {
-                    y: scenario['prediction'][j]['sum_consumption_proposal'],
+                    y: value,
                     x: hour
                 }
             })
@@ -277,6 +305,7 @@ function create_chart_multibar (nom, scenarios, div) {
             .rotateLabels(45)
             .groupSpacing(0.1)
             //.stacked(true)
+            .yDomain([min, max]);
         ;
         chart.reduceXTicks(false)
             .staggerLabels(true);
