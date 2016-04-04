@@ -1,4 +1,7 @@
-
+/*
+coding: utf-8 -*-
+__author__ = 'XaviTorello'
+ */
 
 $.urlParam = function(name){
     var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
@@ -22,133 +25,12 @@ var days_in_week = ["Diumenge", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Div
 var days_in_week_lite = ["Dg", "Dl", "Dm", "Dx", "Dj", "Dv", "Ds"];
 
 
-
-function create_chartxx(ON, scenarios) {
-
-//    console.dir(scenarios[0].prediction);
-
-    var data_csv = [];
-    $.each(scenarios[0].prediction, function(index,value) {
-        date = new Date(value._id);
-
-        year = date.getFullYear();
-        month = date.getMonth();
-        day = date.getDay();
-        hour = date.getHours();
-
-//        console.log(year, month, day, hour);
-        data_csv.push([date, ""+value.sum_consumption_proposal]);
-    });
-
-   // console.log(data_csv);
-
-   // var data_csv = scenarios[0].prediction;
-    var data_csv_pred = data_csv;
-
-    var chart;
-    var data;
-
-
-    nv.addGraph(function () {
-
-        chart = nv.models.lineChart()
-            .options({
-                transitionDuration: 300,
-                useInteractiveGuideline: true
-            })
-        ;
-
-        chart.xAxis
-            .showMaxMin(false)
-            .axisLabel("Data")
-
-            //.tickFormat(d3.format(',.1f'))
-            .tickFormat(
-                function (d) {
-                    return d3.time.format('%d/%m %H:%M')(new Date(d))
-                    //return d3.time.format('%d/%m %H:%M')(new Date(d))
-                }
-            )
-            .staggerLabels(true)
-        ;
-        chart.yAxis
-            .axisLabel('Energia (kw)')
-            .showMaxMin(true)
-            .tickFormat(function (d) {
-                if (d == null) {
-                    return 'N/A';
-                }
-                return d3.format(',.4f')(d);
-            })
-        ;
-        data = dades(data_csv, data_csv_pred);
-
-    //    console.log("en",data);
-
-        d3.select(ON).append('svg')
-            .datum(data)
-            .call(chart);
-        nv.utils.windowResize(chart.update);
-        return chart;
-        });
-
-
-        function dades(data_csv, data_csv_prediccio) {
-            var passat = [],
-                prediccio = [];
-
-            for (var i = 0; i < data_csv.length; i++) {
-
-                passat.push({
-                    x: i,
-                    y: "2.1"
-                });
-                prediccio.push({
-                    x: i,
-                    y: "2.1"
-                });
-
-                /*
-                passat.push({
-                    x: new Date(data_csv[i][0]),
-                    y: data_csv[i][1]
-                });
-                prediccio.push({
-                    x: new Date(data_csv_prediccio[i][0]),
-                    y: Math.round(data_csv_prediccio[i][1])
-                });
-
-                */
-
-            }
-
-            return [
-                {
-                    area: true,
-                    values: passat,
-                    key: "Passat",
-                    color: "#ff7f0e",
-                    strokeWidth: 2,
-                    classed: 'dashed'
-                },
-                {
-                    area: true,
-                    values: prediccio,
-                    key: "Predicció",
-                    color: "#2ca02c",
-                    strokeWidth: 2,
-                    classed: 'dashed'
-                }
-            ];
-        }
-}
-
-
+// Create a new Multiarea chart
 function create_chart_multiarea (nom, scenarios, div) {
     create_chart_multiline (nom, scenarios, div, true);
 }
 
-
+// Create a new Multiline chart
 function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
 
     var min=null, max=0;
@@ -181,8 +63,6 @@ function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
     });
 
 
-    console.log("min: "+min);
-    console.log("max: "+max);
 
    // console.log('data scenarios',data_scenarios);
 
@@ -283,9 +163,7 @@ function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
 }
 
 
-
-
-
+// Create a new Multibar chart
 function create_chart_multibar (nom, scenarios, div) {
 
     var min=null, max=0;
@@ -382,15 +260,16 @@ function create_chart_multibar (nom, scenarios, div) {
 
 }
 
+//Clean right history Proposals menu
 function clear_hist(){
     $('#llistat_historic ul').empty();
 }
 
+//Append history to right history Proposals menu
 function append_hist(name){
-    $('#llistat_historic ul').append("<li><a href='javascript:append_chart(\"#execucio\", \""+ name + "\");' >"
+    $('#llistat_historic ul').append("<li><a id='" + name + "' href='javascript:append_chart(\"#execucio\", \""+ name + "\");' draggable='true' ondragstart='drag(event)'>"
         + convert_date_to_title(name,1)+"</a></li>");
 }
-
 
 //From a string like "160401_160402" convert it to a Chart Title
 function convert_date_to_title (string, lite){
@@ -413,13 +292,13 @@ function convert_date_to_title (string, lite){
     return title;
 }
 
-
+//Validate number format (paginators)
 function validateNumber(num){
     return ($.isNumeric(num) && num >0);
 }
 
 //Fetch all proposals and initializates the right history menu
-//Also autoload the last execution
+//  If main execucion -> autoloads the last execution on main section
 function get_proposals(setMain){
 
     if (setMain == undefined)
@@ -476,7 +355,7 @@ function get_proposals(setMain){
 
 }
 
-
+//WIP fresh selector todo
 function create_radio_box(id, value, text, selected){
     checked = (selected)? "checked" : "";
 
@@ -501,6 +380,7 @@ function create_radio_box(id, value, text, selected){
 */
 }
 
+//Chart type selector
 function graphic_type_selector(id){
     return "<form>" +
     '<div class="form-group pull-right  ">' +
@@ -525,14 +405,15 @@ function graphic_type_selector(id){
 }
 
 
+//onChange chart type trigger
 function radioValueChanged() {
     name = $(this).attr('name');
     type = $(this).val();
 
     reset_chart(name, name, type);
-
 }
 
+//Clean an existing chart
 function reset_chart(div, id, type){
 
     child_div = "chart_" + id
@@ -545,7 +426,14 @@ function reset_chart(div, id, type){
 
 }
 
+//Scroll to chart
+function go_to_chart (div) {
+    $('html, body').animate({
+        scrollTop: $(div).offset().top
+    }, 2000);
+}
 
+//Append new chart proposal
 function append_chart(div, id, type){
 
     child_div = "chart_" + id
@@ -562,15 +450,18 @@ function append_chart(div, id, type){
 
     //insert the chart
     create_chart("#"+child_div,id,type);
+
+    go_to_chart ("#" + child_div);
 }
 
+//Create new proposal chart handling type
 function create_chart(div, id, type){
     $.ajax({
-        url: 'http://127.0.0.1:5000/proposals/'+id,
+        url: 'http://127.0.0.1:5000/proposals/' + id,
         dataType: 'json',
 
         success: function (data, status, jqXHR) {
-          //  console.log(div)
+            //  console.log(div)
 
             switch(type) {
                 default:
@@ -596,7 +487,7 @@ function create_chart(div, id, type){
     });
 }
 
-
+//Validate paginator UI
 function validatePaginator(current,max) {
     if (current==max) {
         $("#nextPage").hide();
@@ -613,16 +504,17 @@ function validatePaginator(current,max) {
         $("#prevPage").show();
     }
 
-    console.log(current);
-    console.log(max);
+
 }
 
+//Increase Pager
 function getNextPage() {
     currentPage++;
     validatePaginator(currentPage,maxPage);
     get_proposals();
 }
 
+//Decrease Pager
 function getPrevPage(max) {
 
     if (currentPage>1) {
@@ -630,4 +522,55 @@ function getPrevPage(max) {
         currentPage--;
         get_proposals();
     }
+}
+
+//Permit drop
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+
+//Drag handler
+function drag(ev) {
+    ev.dataTransfer.setData("chart_id", ev.target.id);
+}
+
+//Append drop handler
+function dropAppend(ev, awon, clear) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("chart_id");
+
+    if (clear)
+        $("#"+awon).empty();
+
+    append_chart("#"+awon, data);
+}
+
+//Drop handler
+function drop(ev, awon) {
+    dropAppend(ev,awon, true);
+}
+
+//Let Propostes right menu follow the scroll!
+function div_follow_scroll (div) {
+
+    (function($) {
+        var element = $('#' + div),
+            originalY = element.offset().top;
+
+        // Space between element and top of screen (when scrolling)
+        var topMargin = 20;
+
+        // Should probably be set in CSS; but here just for emphasis
+        element.css('position', 'relative');
+
+        $(window).on('scroll', function(event) {
+            var scrollTop = $(window).scrollTop();
+
+            element.stop(false, false).animate({
+                top: scrollTop < originalY
+                        ? 0
+                        : scrollTop - originalY + topMargin
+            }, 300);
+        });
+    })(jQuery);
 }
