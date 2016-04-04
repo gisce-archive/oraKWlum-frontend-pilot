@@ -136,12 +136,12 @@ function create_chart_multiarea (nom, scenarios, div) {
 }
 
 
-function create_chart_multiline (nom, scenarios, div, area) {
+function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
 
     var min=null, max=0;
     var data_scenarios  = new d3.range(0,scenarios.length).map(function(d,i) {
-        //console.dir(scenarios[i]);
-        scenario = scenarios[i]
+        scenario = scenarios[i];
+
         return {
             area: area,
             strokeWidth: 2,
@@ -176,7 +176,6 @@ function create_chart_multiline (nom, scenarios, div, area) {
     var chart;
 
 
-
     nv.addGraph(function() {
 
         chart = nv.models.lineChart()
@@ -189,43 +188,51 @@ function create_chart_multiline (nom, scenarios, div, area) {
         ;
 
 
-
         chart.margin({bottom: 100, left: 70});
-        chart.xAxis.axisLabelDistance(0);
+
+        if (removeAxis == true){
+            chart.showXAxis(false);
+            chart.showYAxis(false);
+        }
+        else {
+            chart.xAxis
+                .showMaxMin(false)
+                .axisLabel("Hores (h)")
+                .rotateLabels(45)
 
 
-        chart.xAxis
-            .showMaxMin(false)
-            .axisLabel("Hores (h)")
-            .rotateLabels(45)
+                //.tickFormat(d3.format(',.1f'))
+                .tickFormat(
+                    function (d) {
+                        return d3.time.format('%d/%m %H:%M')(new Date(d))
+                        //return d3.time.format('%d/%m %H:%M')(new Date(d))
+                    }
+                )
+                .staggerLabels(true)
+                .ticks(30)
+            ;
+
+            chart.xScale(d3.time.scale.utc());
 
 
-            //.tickFormat(d3.format(',.1f'))
-            .tickFormat(
-                function (d) {
-                    return d3.time.format('%d/%m %H:%M')(new Date(d))
-                    //return d3.time.format('%d/%m %H:%M')(new Date(d))
-                }
-            )
-            .staggerLabels(true)
-            .ticks(30)
-        ;
+            chart.yAxis
+                .axisLabelDistance(10)
+                .axisLabel('Energia (kw)')
+                .showMaxMin(true)
+                .tickFormat(function (d) {
+                    if (d == null) {
+                        return 'N/A';
+                    }
+                    return d3.format('.0f')(d);
+                })
 
-        chart.xScale(d3.time.scale.utc());
+            ;
+        }
+
+        chart.xAxis.axisLabelDistance(20);
 
 
-        chart.yAxis
-            .axisLabelDistance(10)
-            .axisLabel('Energia (kw)')
-            .showMaxMin(true)
-            .tickFormat(function (d) {
-                if (d == null) {
-                    return 'N/A';
-                }
-                return d3.format('.0f')(d);
-            })
 
-        ;
 
 
 
@@ -295,8 +302,6 @@ function create_chart_multibar (nom, scenarios, div) {
 //    console.log('data scenarios',data_scenarios);
 
     var chart;
-
-
 
     nv.addGraph(function() {
         chart = nv.models.multiBarChart()
@@ -458,6 +463,7 @@ function graphic_type_selector(id){
         "<input type=radio name='" + id + "' value='area' checked> Area&nbsp;&nbsp;" +
         "<input type=radio name='" + id + "' value='line'> Line&nbsp;&nbsp;" +
         "<input type=radio name='" + id + "' value='bar'> Bar&nbsp;&nbsp;" +
+        "<input type=radio name='" + id + "' value='all'> All&nbsp;&nbsp;" +
         "</div></form>";
       //  */
 
@@ -485,10 +491,6 @@ function radioValueChanged() {
 function reset_chart(div, id, type){
 
     child_div = "chart_" + id
-
-    //$(div + " svg").html("LOL");
-
-    //console.log (   $("#"+child_div + " svg").html()  );
 
     //Delete previous chart
     $("#"+child_div + " svg").empty();
@@ -536,6 +538,10 @@ function create_chart(div, id, type){
                     create_chart_multiline (data.name, data.scenarios, div);
                     break;
                 case 'bar':
+                    create_chart_multibar(data.name, data.scenarios, div);
+                    break;
+                case 'all':
+                    create_chart_multiline (data.name, data.scenarios, div, false, true);
                     create_chart_multibar(data.name, data.scenarios, div);
                     break;
             }
