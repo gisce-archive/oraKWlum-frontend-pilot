@@ -1,6 +1,8 @@
 /*
 coding: utf-8 -*-
 __author__ = 'XaviTorello'
+
+orakwlum-frontend - Support functions
  */
 
 $.urlParam = function(name){
@@ -12,7 +14,6 @@ $.urlParam = function(name){
        return results[1] || 0;
     }
 }
-
 
 var max_elements = 8;
 var currentPage = $.urlParam("page");
@@ -48,7 +49,6 @@ function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
                 if (!min)  min=value;  //take the first value of the current scope as a min
 
                 hour = new Date(scenario['prediction'][j]['_id']); //.replace("GMT","UTC"));
-
                 hour = new Date(hour - (2 * 60 *60*1000));  //localtime to UTC
 
                 min = Math.min(min, value);
@@ -62,12 +62,7 @@ function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
         };
     });
 
-
-
-   // console.log('data scenarios',data_scenarios);
-
     var chart;
-
 
     nv.addGraph(function() {
 
@@ -78,7 +73,6 @@ function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
             })
             .yDomain([min, max]);
         ;
-
 
         chart.margin({bottom: 100, left: 70});
 
@@ -93,8 +87,7 @@ function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
 
             chart.useInteractiveGuideline(false);
         }
-        else
-        {
+        else {
             chart.xAxis
                 .showMaxMin(false)
                 .axisLabel("Hores (h)")
@@ -113,7 +106,6 @@ function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
 
             chart.xScale(d3.time.scale.utc());
 
-
             chart.yAxis
                 .axisLabelDistance(10)
                 .axisLabel('Energia (kw)')
@@ -124,18 +116,10 @@ function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
                     }
                     return d3.format('.0f')(d);
                 })
-
             ;
         }
 
         chart.xAxis.axisLabelDistance(20);
-
-
-
-
-
-
-
 
         chart.dispatch.on('renderEnd', function(){
             nv.log('Render Complete');
@@ -147,7 +131,6 @@ function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
 
         nv.utils.windowResize(chart.update);
 
-
         /*
         chart.dispatch.on('stateChange', function(e) {
             nv.log('New State:', JSON.stringify(e));
@@ -155,13 +138,10 @@ function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
         chart.state.dispatch.on('change', function(state){
             nv.log('state', JSON.stringify(state));
         });
-
         */
         return chart;
     });
-
 }
-
 
 // Create a new Multibar chart
 function create_chart_multibar (nom, scenarios, div) {
@@ -186,8 +166,6 @@ function create_chart_multibar (nom, scenarios, div) {
                 min = Math.min(min, value);
                 max = Math.max(max, value);
 
-                //console.log(hour);
-
                 return {
                     y: value,
                     x: hour
@@ -195,8 +173,6 @@ function create_chart_multibar (nom, scenarios, div) {
             })
         };
     });
-
-//    console.log('data scenarios',data_scenarios);
 
     var chart;
 
@@ -236,15 +212,12 @@ function create_chart_multibar (nom, scenarios, div) {
             nv.log('Render Complete');
         });
 
-
         d3.select(div + ' svg')
             .datum(data_scenarios)
             .call(chart)
-
         ;
 
         nv.utils.windowResize(chart.update);
-
 
         /*
         chart.dispatch.on('stateChange', function(e) {
@@ -253,7 +226,6 @@ function create_chart_multibar (nom, scenarios, div) {
         chart.state.dispatch.on('change', function(state){
             nv.log('state', JSON.stringify(state));
         });
-
         */
         return chart;
     });
@@ -261,19 +233,18 @@ function create_chart_multibar (nom, scenarios, div) {
 }
 
 //Clean right history Proposals menu
-function clear_hist(){
+function clear_hist() {
     $('#llistat_historic ul').empty();
 }
 
 //Append history to right history Proposals menu
-function append_hist(name){
+function append_hist(name) {
     $('#llistat_historic ul').append("<li><a id='" + name + "' href='javascript:append_chart(\"#execucio\", \""+ name + "\");' draggable='true' ondragstart='drag(event)'>"
         + convert_date_to_title(name,1)+"</a></li>");
 }
 
 //From a string like "160401_160402" convert it to a Chart Title
-function convert_date_to_title (string, lite){
-
+function convert_date_to_title (string, lite) {
     //Lite week days (abreviated version)
     days_week = (lite)?days_in_week_lite:days_in_week;
 
@@ -285,9 +256,7 @@ function convert_date_to_title (string, lite){
 
     separator = "/";
 
-
     title = days_week[day_num] + " " + day + separator + month + separator + year;
-
 
     return title;
 }
@@ -295,64 +264,6 @@ function convert_date_to_title (string, lite){
 //Validate number format (paginators)
 function validateNumber(num){
     return ($.isNumeric(num) && num >0);
-}
-
-//Fetch all proposals and initializates the right history menu
-//  If main execucion -> autoloads the last execution on main section
-function get_proposals(setMain){
-
-    if (setMain == undefined)
-        setMain = false;
-
-    $.ajax({
-        url: 'http://127.0.0.1:5000/proposals?sort=-_id&max_results='+ max_elements + '&page='+ currentPage,
-        dataType: 'json',
-
-        success: function (data, status, jqXHR) {
-
-            proposals = [];
-            parentDiv='#execucio_ultima';
-
-            if (!validateNumber(currentPage))
-                return false;
-
-            $("#currentPage").html(currentPage);
-
-
-            clear_hist();
-
-            $.each(data._items, function (index,value) {
-                append_hist(value.name);
-            });
-
-            maxPage = (Math.round(data._meta.total/max_elements));
-
-            validatePaginator(currentPage, maxPage);
-
-            //autoload the last element on execucio_ultima div
-
-
-            if (setMain) {
-                $(parentDiv).empty();
-
-                last = data._items[0].name;
-                //last = $( '#llistat_historic > ul > li:last-child > a').href();
-                child_div = "chart_" + last;
-
-                $(parentDiv).append("<h3 class='grafic_title'>" + convert_date_to_title(last) + "</h3>");
-                $(parentDiv).append(graphic_type_selector(last));
-                $(parentDiv).append("<div id='" + child_div + "'><svg class='nvd3-svg'></svg></div>");
-                create_chart(parentDiv, last);
-
-                $("input[name='" + last + "']").change(radioValueChanged);
-            }
-        },
-
-        error: function (jqXHR, status) {
-            $("#chart").append("KO!!!");
-        }
-    });
-
 }
 
 //WIP fresh selector todo
@@ -366,9 +277,6 @@ function create_radio_box(id, value, text, selected){
                     '&nbsp;&nbsp;&nbsp;</label>';
 /*
                   </div>
-
-
-
 
             '<label class="">' +
               '<div class="icheckbox_flat-green checked"  style="position: relative;">' +
@@ -452,39 +360,6 @@ function append_chart(div, id, type){
     create_chart("#"+child_div,id,type);
 
     go_to_chart ("#" + child_div);
-}
-
-//Create new proposal chart handling type
-function create_chart(div, id, type){
-    $.ajax({
-        url: 'http://127.0.0.1:5000/proposals/' + id,
-        dataType: 'json',
-
-        success: function (data, status, jqXHR) {
-            //  console.log(div)
-
-            switch(type) {
-                default:
-                case 'area':
-                    create_chart_multiarea (data.name, data.scenarios, div);
-                    break;
-                case 'line':
-                    create_chart_multiline (data.name, data.scenarios, div);
-                    break;
-                case 'bar':
-                    create_chart_multibar(data.name, data.scenarios, div);
-                    break;
-                case 'all':
-                    create_chart_multiline (data.name, data.scenarios, div, false, true);
-                    create_chart_multibar(data.name, data.scenarios, div);
-                    break;
-            }
-        },
-
-        error: function (jqXHR, status) {
-            $(div).append("KO!!!");
-        }
-    });
 }
 
 //Validate paginator UI

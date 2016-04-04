@@ -1,0 +1,22 @@
+#llistat_historic ul li {
+    list-style: none;
+    margin-left: 0;
+}
+
+#llistat_historic ul  {
+    padding-left: 0px;
+    text-align: center;
+}
+
+.grafic {
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+
+.grafic svg {
+    height: 350px;
+}
+
+.grafic_title {
+    text-align: center;
+}
