@@ -184,7 +184,6 @@ function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
                 useInteractiveGuideline: true
             })
             .yDomain([min, max]);
-
         ;
 
 
@@ -193,13 +192,20 @@ function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
         if (removeAxis == true){
             chart.showXAxis(false);
             chart.showYAxis(false);
+
+            x = d3.scale.ordinal()
+               // .rangeRoundBands([0,35])
+            ;
+            chart.xAxis.scale(x);
+
+            chart.useInteractiveGuideline(false);
         }
-        else {
+        else
+        {
             chart.xAxis
                 .showMaxMin(false)
                 .axisLabel("Hores (h)")
                 .rotateLabels(45)
-
 
                 //.tickFormat(d3.format(',.1f'))
                 .tickFormat(
@@ -310,8 +316,10 @@ function create_chart_multibar (nom, scenarios, div) {
             .rotateLabels(45)
             .groupSpacing(0.1)
             //.stacked(true)
-            .yDomain([min, max]);
+            .yDomain([min, max])
+            .showControls(false)  //disable the option to stack the bars
         ;
+
         chart.reduceXTicks(false)
             .staggerLabels(true);
 
@@ -324,9 +332,7 @@ function create_chart_multibar (nom, scenarios, div) {
                     return d3.time.format('%d/%m %H:%M')(new Date(d))
                     //return d3.time.format('%d/%m %H:%M')(new Date(d))
                 })
-
         ;
-
 
         chart.yAxis
             .axisLabel("Energia (kw)")
