@@ -293,10 +293,10 @@ function graphic_type_selector(id){
     return "<form>" +
     '<div class="form-group pull-right  ">' +
 
-        "<input type=radio name='" + id + "' value='area' checked> Area&nbsp;&nbsp;" +
-        "<input type=radio name='" + id + "' value='line'> Line&nbsp;&nbsp;" +
-        "<input type=radio name='" + id + "' value='bar'> Bar&nbsp;&nbsp;" +
-        "<input type=radio name='" + id + "' value='all'> All&nbsp;&nbsp;" +
+        "<input type=radio name='" + id + "' value='area' checked> Àrea&nbsp;&nbsp;" +
+        "<input type=radio name='" + id + "' value='line'> Línies&nbsp;&nbsp;" +
+        "<input type=radio name='" + id + "' value='bar'> Barres&nbsp;&nbsp;" +
+        "<input type=radio name='" + id + "' value='all'> Conjut&nbsp;&nbsp;" +
         "</div></form>";
       //  */
 
