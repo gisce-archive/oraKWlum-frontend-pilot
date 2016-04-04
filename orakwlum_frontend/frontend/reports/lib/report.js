@@ -139,15 +139,18 @@ function create_chart_multiarea (nom, scenarios, div) {
 function create_chart_multiline (nom, scenarios, div, area) {
 
     var data_scenarios  = new d3.range(0,scenarios.length).map(function(d,i) {
+        //console.dir(scenarios[i]);
         scenario = scenarios[i]
         return {
             area: area,
             strokeWidth: 2,
             classed: 'dashed',
             key: scenario['name'],
-            values: new d3.range(0,23).map( function(f,j) {
+            values: new d3.range(0,scenario['prediction'].length).map( function(f,j) {
 
-                hour = new Date(scenario['prediction'][j]['_id'])
+                hour = new Date(scenario['prediction'][j]['_id']); //.replace("GMT","UTC"));
+
+                hour = new Date(hour - (2 * 60 *60*1000));  //localtime to UTC
 
                 return {
                     y: scenario['prediction'][j]['sum_consumption_proposal'],
@@ -161,6 +164,8 @@ function create_chart_multiline (nom, scenarios, div, area) {
 
     var chart;
 
+
+
     nv.addGraph(function() {
 
         chart = nv.models.lineChart()
@@ -170,9 +175,17 @@ function create_chart_multiline (nom, scenarios, div, area) {
             })
         ;
 
+
+
+        chart.margin({bottom: 100, left: 70});
+
+
         chart.xAxis
             .showMaxMin(false)
             .axisLabel("Hores (h)")
+            .axisLabelDistance(45)
+            .rotateLabels(45)
+
 
             //.tickFormat(d3.format(',.1f'))
             .tickFormat(
@@ -182,7 +195,12 @@ function create_chart_multiline (nom, scenarios, div, area) {
                 }
             )
             .staggerLabels(true)
+            .ticks(30)
         ;
+
+        chart.xScale(d3.time.scale.utc());
+
+
         chart.yAxis
             .axisLabel('Energia (kw)')
             .showMaxMin(true)
@@ -192,8 +210,8 @@ function create_chart_multiline (nom, scenarios, div, area) {
                 }
                 return d3.format('.0f')(d);
             })
-        ;
 
+        ;
 
         chart.dispatch.on('renderEnd', function(){
             nv.log('Render Complete');
@@ -230,9 +248,13 @@ function create_chart_multibar (nom, scenarios, div) {
         scenario = scenarios[i]
         return {
             key: scenario['name'],
-            values: new d3.range(0,23).map( function(f,j) {
+            values: new d3.range(0,(scenario['prediction'].length) ).map( function(f,j) {
 
-                hour = new Date(scenario['prediction'][j]['_id'])
+                hour = new Date(scenario['prediction'][j]['_id']); //.replace("GMT","UTC"));
+
+                hour = new Date(hour - (2 * 60 *60*1000));  //localtime to UTC
+
+                //console.log(hour);
 
                 return {
                     y: scenario['prediction'][j]['sum_consumption_proposal'],
@@ -245,6 +267,9 @@ function create_chart_multibar (nom, scenarios, div) {
 //    console.log('data scenarios',data_scenarios);
 
     var chart;
+
+
+
     nv.addGraph(function() {
         chart = nv.models.multiBarChart()
             .duration(300)
@@ -253,7 +278,9 @@ function create_chart_multibar (nom, scenarios, div) {
             .groupSpacing(0.1)
             //.stacked(true)
         ;
-        chart.reduceXTicks(false).staggerLabels(true);
+        chart.reduceXTicks(false)
+            .staggerLabels(true);
+
         chart.xAxis
             .axisLabel("Hores (h)")
             .axisLabelDistance(45)
@@ -265,9 +292,12 @@ function create_chart_multibar (nom, scenarios, div) {
                 })
 
         ;
+
+
         chart.yAxis
             .axisLabel("Energia (kw)")
             .axisLabelDistance(10)
+            .showMaxMin(true)
             .tickFormat(d3.format('.0f'))
         ;
 
@@ -278,7 +308,9 @@ function create_chart_multibar (nom, scenarios, div) {
 
         d3.select(div + ' svg')
             .datum(data_scenarios)
-            .call(chart);
+            .call(chart)
+
+        ;
 
         nv.utils.windowResize(chart.update);
 
