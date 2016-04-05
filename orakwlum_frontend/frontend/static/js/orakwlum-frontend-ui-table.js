@@ -6,98 +6,83 @@ orakwlum-frontend - Table Support functions
  */
 
 
+colors = ["danger", "yellow", "primary", "success"];
 
+
+function getFormatedTime(datee){
+    return ("0" + datee.getUTCHours()).slice(-2) + ":00 " + datee.getDate() + "/" + datee.getMonth();
+}
+
+
+function getProgressBar(amount, color=0) {
+
+    return '<div class="progress progress-xs">' +
+              '<div class="progress-bar progress-bar-'+ colors[color%colors.length] + '" style="width: '+  amount + '%"></div>' +
+            '</div>';
+}
 
 //Create a new odded table
 function create_table_odded (nom, scenarios, div) {
-/*
-       var data_scenarios  = new d3.range(0,scenarios.length).map(function(d,i) {
-            scenario = scenarios[i]
 
-            return {
-                key: scenario['name'],
-                values: new d3.range(0,(scenario['prediction'].length) ).map( function(f,j) {
+    table = '<div class="box-header"><h3 class="box-title">' + nom + '</h3></div>' +
+        '<div class="box-body no-padding">';
 
-                    value = scenario['prediction'][j]['sum_consumption_proposal'];
+    numScenarios = scenarios.length
 
-                    if (!min)  min=value;  //take the first value of the current scope as a min
+    if (! scenarios.length>0) {
+        return;
+    }
 
-                    hour = new Date(scenario['prediction'][j]['_id']); //.replace("GMT","UTC"));
+    numHores = scenarios[numScenarios-1].prediction.length;
 
-                    hour = new Date(hour - (2 * 60 *60*1000));  //localtime to UTC
+    max_value = 0;
 
-                    min = Math.min(min, value);
-                    max = Math.max(max, value);
+    // Set table header and reach the max value
+    table = '<tr><th>Hora</th>';
 
-                    return {
-                        y: value,
-                        x: hour
-                    }
-                })
-            };
-       });
+    for (i=0; i< numScenarios; i++) {
+        table += '<th>' + scenarios[i].name + '</th>';
 
-*/
-        $(div).html("Taula princ");
+        console.log(scenarios[i].prediction);
 
-    /*
-              <div class="box">
-                <div class="box-header">
-                  <h3 class="box-title">Striped Full Width Table</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body no-padding">
-                  <table class="table table-striped">
-                    <tr>
-                      <th style="width: 10px">#</th>
-                      <th>Task</th>
-                      <th>Progress</th>
-                      <th style="width: 40px">Label</th>
-                    </tr>
-                    <tr>
-                      <td>1.</td>
-                      <td>Update software</td>
-                      <td>
-                        <div class="progress progress-xs">
-                          <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-                        </div>
-                      </td>
-                      <td><span class="badge bg-red">55%</span></td>
-                    </tr>
-                    <tr>
-                      <td>2.</td>
-                      <td>Clean database</td>
-                      <td>
-                        <div class="progress progress-xs">
-                          <div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
-                        </div>
-                      </td>
-                      <td><span class="badge bg-yellow">70%</span></td>
-                    </tr>
-                    <tr>
-                      <td>3.</td>
-                      <td>Cron job running</td>
-                      <td>
-                        <div class="progress progress-xs progress-striped active">
-                          <div class="progress-bar progress-bar-primary" style="width: 30%"></div>
-                        </div>
-                      </td>
-                      <td><span class="badge bg-light-blue">30%</span></td>
-                    </tr>
-                    <tr>
-                      <td>4.</td>
-                      <td>Fix and squish bugs</td>
-                      <td>
-                        <div class="progress progress-xs progress-striped active">
-                          <div class="progress-bar progress-bar-success" style="width: 90%"></div>
-                        </div>
-                      </td>
-                      <td><span class="badge bg-green">90%</span></td>
-                    </tr>
-                  </table>
-                </div><!-- /.box-body -->
-              </div><!-- /.box -->
+    }
 
-        */
+    // Prepare table content and set max values
+    for (hora=0; hora<numHores; hora++) {
+        horaa = new Date(scenarios[0].prediction[hora]._id);
+        console.log(scenarios[0].prediction[hora]._id);
+        tr = '<tr><td>' + getFormatedTime(horaa); + '</td>';
+        $.each(scenarios, function (idxScenario, scenario) {
+
+            prediction = scenario.prediction[hora];
+
+            //console.log(hora + scenario.name + " " + prediction.sum_consumption_proposal);
+
+            tr += '<td class="consumption" color="' + idxScenario + '" value=" ' + prediction.sum_consumption_proposal + '">' + prediction.sum_consumption_proposal + '</td>';
+
+            max_value = Math.max(max_value, prediction.sum_consumption_proposal);
+
+        });
+        table += tr + '</tr>';
+    }
+    table += '</table>' +
+        '</div>';
+
+
+    table = '<table class="table table-striped" id="' + nom + '" max="' + max_value + '">' + table;
+
+    $(div).html(table);
+
+    if (1) {
+        //Apply colored bar for each consumption   [not done previously to avoid process N elements over scenarios to fetch the max]
+        $(".consumption").each( function(id, val) {
+            valuee=($(this).attr("value"));
+            colorr=($(this).attr("color"));
+
+            $(this).html(getProgressBar(valuee/max_value*100, colorr));
+
+        });
+    }
 
 }
 
