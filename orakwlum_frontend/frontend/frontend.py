@@ -20,12 +20,13 @@ class Frontend(object):
     #    '.json': 'application/x-web-app-manifest+json',
     #});
 
-    def __init__(self, port=8000):
+    def __init__(self, port=8000, host="0.0.0.0"):
         self.app = Flask(__name__)
         self.thread = threading.Thread(target=self.start, args=())
         self.thread.daemon = True
         self.thread.start()
         self.PORT = port
+        self.HOST = host
 
 
     def __del__(self):
@@ -92,7 +93,7 @@ class Frontend(object):
 
 
             #print " * xFrontend running on http://127.0.0.1:{}".format(self.PORT)
-            self.app.run(port=self.PORT)
+            self.app.run(port=self.PORT, host=self.HOST)
 
 
         except:

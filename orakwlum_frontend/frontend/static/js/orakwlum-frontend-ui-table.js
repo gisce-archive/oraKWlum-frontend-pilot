@@ -6,6 +6,8 @@ orakwlum-frontend - Table Support functions
  */
 
 
+
+
 //Create a new odded table
 function create_table_odded (nom, scenarios, div) {
 /*
@@ -36,7 +38,7 @@ function create_table_odded (nom, scenarios, div) {
        });
 
 */
-        $(div).html("LOL");
+        $(div).html("Taula princ");
 
     /*
               <div class="box">
@@ -97,7 +99,27 @@ function create_table_odded (nom, scenarios, div) {
 
         */
 
+}
 
 
 
+//Append new table
+function append_table(div, id, type){
+
+    child_div = "table_" + id
+
+    //create a child element on Proposals zone if not exists
+    if ($("#"+child_div).length==0){
+
+        $(div).append("<div><h3 class='grafic_title'>"+ convert_date_to_title(id));
+        $(div).append(graphic_type_selector(id));
+        $(div).append("<div id=" + child_div +" class='taula'></div></div>");
+
+        $("input[name='" + id + "']").change(radioValueChanged);
+    }
+
+    //insert the chart
+    create_table("#"+child_div,id,type);
+
+    go_to_div ("#" + child_div);
 }
