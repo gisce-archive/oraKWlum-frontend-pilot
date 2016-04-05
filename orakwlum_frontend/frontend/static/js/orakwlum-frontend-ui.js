@@ -238,10 +238,13 @@ function clear_hist() {
 }
 
 //Append history to right history Proposals menu
-function append_hist(name) {
-    $('#llistat_historic ul').append("<li><a id='" + name + "' href='javascript:append_chart(\"#execucio\", \""+ name + "\");' draggable='true' ondragstart='drag(event)'>"
+function append_hist(name, on="execucio", metode="append_chart") {
+
+    $('#llistat_historic ul').append("<li><a id='" + name + "' href='javascript:"+ metode + "(\"#" + on + "\", \""+ name + "\");' draggable='true' ondragstart='drag(event)'>"
         + convert_date_to_title(name,1)+"</a></li>");
 }
+
+
 
 //From a string like "160401_160402" convert it to a Chart Title
 function convert_date_to_title (string, lite) {

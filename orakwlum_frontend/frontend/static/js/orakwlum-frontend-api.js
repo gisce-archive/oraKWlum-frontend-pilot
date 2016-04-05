@@ -25,7 +25,10 @@ if (!currentPage)
 
 //Fetch all proposals and initializates the right history menu
 //  If main execucion -> autoloads the last execution on main section
-function get_proposals(setMain){
+function get_proposals(setMain, on="execucio"){
+
+    metode = (on == "execucio_ultima")? "create_chart":"append_chart";
+
     if (setMain == undefined)
         setMain = false;
 
@@ -46,7 +49,7 @@ function get_proposals(setMain){
             clear_hist();
 
             $.each(data._items, function (index,value) {
-                append_hist(value.name);
+                append_hist(value.name, on, metode);
             });
 
             maxPage = (Math.round(data._meta.total/max_elements));

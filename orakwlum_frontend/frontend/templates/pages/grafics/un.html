@@ -1,0 +1,108 @@
+{% extends "layout.html" %}
+{% block body %}
+
+  <div class="content-wrapper">
+        <section class="content-header">
+          <h1>
+                {{ self.title() }}
+                <small>Gràfic</small>
+          </h1>
+
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Index</a></li>
+            <li><a href="#">Gràfics</a></li>
+            <li class="active">{{ self.title() }}</li>
+          </ol>
+        </section>
+
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-11">
+
+                      <div class="row">
+                            <div class="col-xs-12">
+                                  <div class="box">
+                                        <div class="box-header">
+                                            <h3 class="box-title"></h3>
+                                            <div class="box-tools">
+                                            </div>
+
+                                            <div id="execucio_ultima" class="box-body grafic" ondrop="drop(event,'execucio_ultima')" ondragover="allowDrop(event)">
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="box-body table-responsive no-padding">
+                                        </div>
+
+                                  </div>
+                            </div>
+                      </div>
+
+                </div>
+
+
+                <div id="menu_propostes" class="col-md-1">
+                    <div class="box">
+                        <div class="box-header text-center">
+                          <h3 class="box-title">Propostes</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div id="llistat_historic" class="box-body no-padding">
+                            <ul>
+                            </ul>
+                        </div>
+
+                        <div class="box-tools text-center">
+                            <ul class="pagination pagination-sm no-margin ">
+                                <li><a id="prevPage" href="javascript:getPrevPage();">&laquo;</a></li>
+                                <li><a id="currentPage">1</a></li>
+                                <li><a id="nextPage" href="javascript:getNextPage();">&raquo;</a></li>
+                            </ul>
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </section>
+  </div>
+
+
+{% endblock %}
+
+
+
+
+
+{% block code %}
+
+<script>
+
+/* WIP fresh selectors
+        //iCheck for checkbox and radio inputs
+
+        $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+        //Red color scheme for iCheck
+        $('input[type="checkbox"].minimal-red, input[type="radio"].minimal-red').iCheck({
+          checkboxClass: 'icheckbox_minimal-red',
+          radioClass: 'iradio_minimal-red'
+        });
+        //Flat red color scheme for iCheck
+        $('input[type="checkbox"].flat-red, input[type="radio"].flat-red').iCheck({
+          checkboxClass: 'icheckbox_flat-green',
+          radioClass: 'iradio_flat-green'
+        });
+
+*/
+
+    $(document).ready(function () {
+        get_proposals(true, "execucio_ultima");
+        div_follow_scroll("menu_propostes");
+    });
+
+</script>
+
+{% endblock %}

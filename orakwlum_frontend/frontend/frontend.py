@@ -53,15 +53,15 @@ class Frontend(object):
             @self.app.route('/grafic/ultim')
             @self.app.route('/grafic/')
             def grafic_ultim():
-                return render_template('pages/taules.html')
+                return render_template('pages/grafics/ultim.html')
 
             @self.app.route('/grafic/setmana')
             def grafic_setmana():
-                return render_template('pages/taules.html')
+                return render_template('pages/grafics/setmana.html')
 
             @self.app.route('/grafic/setmana/pasada')
             def grafic_setmana_pasada():
-                return render_template('pages/taules.html')
+                return render_template('pages/grafics/setmana_passada.html')
 
 
             ## TAULES
