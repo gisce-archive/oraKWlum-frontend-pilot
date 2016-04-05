@@ -83,6 +83,15 @@ class Frontend(object):
                 return render_template('pages/taules.html')
 
 
+            # ERROR
+            @self.app.errorhandler(404)
+            def pagina_no_trobada(error):
+                return render_template('page_not_found.html'), 404
+
+            @self.app.errorhandler(500)
+            def pagina_no_trobada(error):
+                return render_template('page_not_found.html'), 500
+
 
 
             #print " * xFrontend running on http://127.0.0.1:{}".format(self.PORT)
