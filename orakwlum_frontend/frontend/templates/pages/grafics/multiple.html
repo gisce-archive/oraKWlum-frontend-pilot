@@ -4,14 +4,14 @@
   <div class="content-wrapper">
         <section class="content-header">
           <h1>
-                Històric de prediccions
-                <small>últims resultats</small>
+                {{ self.title() }}
+                <small>Gràfic</small>
           </h1>
 
           <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Index</a></li>
-            <li><a href="#">Gràfics</a></li>
-            <li class="active">Últimes prediccions</li>
+            <li><a href="#"><i class="fa fa-pie-chart"></i> Propostes</a></li>
+              <li>{{ self.title() }}</li>
+              <li  class="active"><a>Gràfic</a></li>
           </ol>
         </section>
 

@@ -26,12 +26,14 @@
     <script src="{{ url_for('static', filename='js/nv.d3.min.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='js/orakwlum-frontend-ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/orakwlum-frontend-ui-chart.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/orakwlum-frontend-ui-table.js') }}"></script>
     <script src="{{ url_for('static', filename='js/orakwlum-frontend-api.js') }}"></script>
     <link href="{{ url_for('static', filename='css/orakwlum-frontend.css') }}" rel="stylesheet">
 
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini sidebar-collapse">
+<body class="hold-transition skin-red sidebar-mini sidebar-collapse">
 <div class="wrapper">
   <aside class="main-sidebar" >
     <section class="sidebar">
@@ -43,7 +45,6 @@
           </a>
           <ul class="treeview-menu">
               <li><a href="{{ url_for('dashboard') }}"><i class="fa fa-circle-o"></i> Històric de propostes</a></li>
-              <li><a target="_blank" href="report.html"><i class="fa fa-circle-o"></i> Zoom [v1]</a></li>
           </ul>
         </li>
 

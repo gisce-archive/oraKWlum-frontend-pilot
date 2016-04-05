@@ -25,9 +25,13 @@ if (!currentPage)
 
 //Fetch all proposals and initializates the right history menu
 //  If main execucion -> autoloads the last execution on main section
-function get_proposals(setMain, on="execucio"){
+function get_proposals(setMain, on="execucio", tipus="chart"){
 
-    metode = (on == "execucio_ultima")? "create_chart":"append_chart";
+    //set action create or append
+    metode = (on == "execucio_ultima")? "create_":"append_";
+
+    //concatenate the type (table or chart)
+    metode += (tipus == "chart")? "chart":"table";
 
     if (setMain == undefined)
         setMain = false;
@@ -59,18 +63,26 @@ function get_proposals(setMain, on="execucio"){
             //autoload the last element on execucio_ultima div
 
             if (setMain) {
-                $(parentDiv).empty();
 
+                $(parentDiv).empty();
                 last = data._items[0].name;
                 //last = $( '#llistat_historic > ul > li:last-child > a').href();
-                child_div = "chart_" + last;
 
-                $(parentDiv).append("<h3 class='grafic_title'>" + convert_date_to_title(last) + "</h3>");
-                $(parentDiv).append(graphic_type_selector(last));
-                $(parentDiv).append("<div id='" + child_div + "'><svg class='nvd3-svg'></svg></div>");
-                create_chart(parentDiv, last);
 
-                $("input[name='" + last + "']").change(radioValueChanged);
+                if (tipus == "chart") {
+                    child_div = "chart_" + last;
+
+                    $(parentDiv).append("<h3 class='grafic_title'>" + convert_date_to_title(last) + "</h3>");
+                    $(parentDiv).append(graphic_type_selector(last));
+                    $(parentDiv).append("<div id='" + child_div + "'><svg class='nvd3-svg'></svg></div>");
+                    create_chart(parentDiv, last);
+
+                    $("input[name='" + last + "']").change(radioValueChanged);
+
+                }
+                else if (tipus == "taula") {
+                    create_table(parentDiv, last);
+                }
             }
         },
 
@@ -106,6 +118,25 @@ function create_chart(div, id, type){
                     create_chart_multibar(data.name, data.scenarios, div);
                     break;
             }
+        },
+
+        error: function (jqXHR, status) {
+            $(div).append("KO!!!");
+        }
+    });
+}
+
+
+
+//Create new proposal table
+function create_table(div, id, type){
+    $.ajax({
+        url: 'http://127.0.0.1:5000/proposals/' + id,
+        dataType: 'json',
+
+        success: function (data, status, jqXHR) {
+            //  console.log(div)
+            create_table_odded (data.name, data.scenarios, div);
         },
 
         error: function (jqXHR, status) {

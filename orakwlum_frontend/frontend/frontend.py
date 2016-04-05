@@ -20,15 +20,12 @@ class Frontend(object):
     #    '.json': 'application/x-web-app-manifest+json',
     #});
 
-    def __init__(self, path="orakwlum_frontend/frontend/reports", port=8000):
+    def __init__(self, port=8000):
         self.app = Flask(__name__)
-
         self.thread = threading.Thread(target=self.start, args=())
         self.thread.daemon = True
         self.thread.start()
-        self.path = path
         self.PORT = port
-        self.httpd = None
 
 
     def __del__(self):
@@ -68,15 +65,15 @@ class Frontend(object):
             @self.app.route('/taula/ultim')
             @self.app.route('/taula/')
             def taula_ultima():
-                return render_template('pages/taules.html')
+                return render_template('pages/taules/ultim.html')
 
             @self.app.route('/taula/setmana')
             def taula_setmana():
-                return render_template('pages/taules.html')
+                return render_template('pages/taules/setmana.html')
 
             @self.app.route('/taula/setmana/pasada')
             def taula_setmana_pasada():
-                return render_template('pages/taules.html')
+                return render_template('pages/taules/setmana_passada.html')
 
             @self.app.route('/taula/<proposta>')
             def taula_una():
@@ -95,7 +92,7 @@ class Frontend(object):
 
 
             #print " * xFrontend running on http://127.0.0.1:{}".format(self.PORT)
-            self.app.run(port=8000)
+            self.app.run(port=self.PORT)
 
 
         except:
