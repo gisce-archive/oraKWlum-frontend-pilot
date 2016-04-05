@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+{% block body %}
+
+  <div class="content-wrapper">
+        <section class="content-header">
+          <h1>
+                Històric de prediccions
+                <small>últims resultats</small>
+          </h1>
+
+          <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Index</a></li>
+            <li><a href="#">Gràfics</a></li>
+            <li class="active">Últimes prediccions</li>
+          </ol>
+        </section>
+
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-11">
+
+                      <div class="row">
+                            <div class="col-xs-12">
+                                  <div class="box">
+                                        <div class="box-header">
+                                            <h3 class="box-title">Principal</h3>
+                                            <div class="box-tools">
+                                                <div class="input-group input-group-sm" style="width: 150px;">
+                                                    <input type="text" name="table_search" class="form-control pull-right" placeholder="Cercar">
+
+                                                    <div class="input-group-btn">
+                                                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div id="execucio_ultima" class="box-body grafic" ondrop="drop(event,'execucio_ultima')" ondragover="allowDrop(event)">
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="box-body table-responsive no-padding">
+                                        </div>
+
+                                  </div>
+                            </div>
+                      </div>
+
+                  <div class="row" >
+                    <div class="col-md-12" ondrop="dropAppend(event,'execucio')" ondragover="allowDrop(event)">
+                      <div class="box">
+                        <div class="box-header with-border">
+                          <h3 class="box-title">Comparativa <span id="data_prev"></span></h3>
+                        </div>
+
+                        <div id="execucio" class="box-body">
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+
+                <div id="menu_propostes" class="col-md-1">
+                    <div class="box">
+                        <div class="box-header text-center">
+                          <h3 class="box-title">Propostes</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div id="llistat_historic" class="box-body no-padding">
+                            <ul>
+                            </ul>
+                        </div>
+
+                        <div class="box-tools text-center">
+                            <ul class="pagination pagination-sm no-margin ">
+                                <li><a id="prevPage" href="javascript:getPrevPage();">&laquo;</a></li>
+                                <li><a id="currentPage">1</a></li>
+                                <li><a id="nextPage" href="javascript:getNextPage();">&raquo;</a></li>
+                            </ul>
+                        </div>
+                  </div>
+                </div>
+            </div>
+        </section>
+  </div>
+
+
+{% endblock %}

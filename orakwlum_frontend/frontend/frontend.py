@@ -3,21 +3,26 @@ __author__ = 'XaviTorello'
 
 from frontend import *
 
-import SimpleHTTPServer
-import SocketServer
 import threading
-import os
+
+from flask import Flask, jsonify, render_template, request
+
+
 
 
 class Frontend(object):
-    Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
     PORT = 8000
+
+    app = Flask(__name__)
+
 
     #Handler.extensions_map.update({
     #    '.json': 'application/x-web-app-manifest+json',
     #});
 
     def __init__(self, path="orakwlum_frontend/frontend/reports", port=8000):
+        self.app = Flask(__name__)
+
         self.thread = threading.Thread(target=self.start, args=())
         self.thread.daemon = True
         self.thread.start()
@@ -25,21 +30,63 @@ class Frontend(object):
         self.PORT = port
         self.httpd = None
 
-        #change working dir
-        os.chdir(path)
 
     def __del__(self):
         self.shutdown()
 
     def start(self):
         try:
-            self.httpd = SocketServer.TCPServer(("", self.PORT), self.Handler)
-            print " * Frontend running on http://127.0.0.1:{}".format(
-                self.PORT)
-            self.httpd.serve_forever()
+
+            ## INDEX
+            @self.app.route('/')
+            def index():
+                return dashboard()
+
+
+            ## DASHBOARD
+            @self.app.route('/dashboard')
+            def dashboard():
+                return render_template('dashboard.html')
+
+
+            ## GRAFICS
+            @self.app.route('/grafic/ultim')
+            @self.app.route('/grafic/')
+            def grafic_ultim():
+                return render_template('taules.html')
+
+            @self.app.route('/grafic/setmana')
+            def grafic_setmana():
+                return render_template('taules.html')
+
+            @self.app.route('/grafic/setmana/pasada')
+            def grafic_setmana_pasada():
+                return render_template('taules.html')
+
+
+            ## GRAFICS
+            @self.app.route('/taula/ultim')
+            @self.app.route('/taula/')
+            def taula_ultima():
+                return render_template('taules.html')
+
+            @self.app.route('/taula/setmana')
+            def taula_setmana():
+                return render_template('taules.html')
+
+            @self.app.route('/taula/setmana/pasada')
+            def taula_setmana_pasada():
+                return render_template('taules.html')
+
+
+
+            #print " * xFrontend running on http://127.0.0.1:{}".format(self.PORT)
+            self.app.run(port=8000)
+
+
         except:
+            raise
             self.shutdown()
 
     def shutdown(self):
-        print "Shutting down the web server"
-        self.httpd.socket.close()
+        print "Shutting down web server"
