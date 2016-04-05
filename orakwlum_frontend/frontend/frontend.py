@@ -8,6 +8,7 @@ import SocketServer
 import threading
 import os
 
+
 class Frontend(object):
     Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
     PORT = 8000
@@ -16,15 +17,16 @@ class Frontend(object):
     #    '.json': 'application/x-web-app-manifest+json',
     #});
 
-    def __init__(self, path="orakwlum_frontend/frontend/reports"):
+    def __init__(self, path="orakwlum_frontend/frontend/reports", port=8000):
         self.thread = threading.Thread(target=self.start, args=())
         self.thread.daemon = True
         self.thread.start()
         self.path = path
+        self.PORT = port
+        self.httpd = None
 
         #change working dir
         os.chdir(path)
-
 
     def __del__(self):
         self.shutdown()
@@ -32,7 +34,8 @@ class Frontend(object):
     def start(self):
         try:
             self.httpd = SocketServer.TCPServer(("", self.PORT), self.Handler)
-            print " * Frontend running on http://127.0.0.1:{}".format(self.PORT)
+            print " * Frontend running on http://127.0.0.1:{}".format(
+                self.PORT)
             self.httpd.serve_forever()
         except:
             self.shutdown()

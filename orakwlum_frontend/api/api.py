@@ -23,7 +23,6 @@ class Api(object):
         self.thread.daemon = True
         self.thread.start()
 
-
     def run(self):
         """
         Start the API
@@ -31,12 +30,8 @@ class Api(object):
         self.api = Eve(settings=self.settings)
         self.api.run()
 
-
     def stop(self):
         pass
 
-
     def status(self):
         self.api.isAlive()
-
-
