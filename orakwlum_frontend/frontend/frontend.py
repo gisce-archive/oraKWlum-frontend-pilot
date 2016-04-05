@@ -5,7 +5,7 @@ from frontend import *
 
 import threading
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, render_template, request
 
 
 
@@ -46,37 +46,41 @@ class Frontend(object):
             ## DASHBOARD
             @self.app.route('/dashboard')
             def dashboard():
-                return render_template('dashboard.html')
+                return render_template('pages/dashboard.html')
 
 
             ## GRAFICS
             @self.app.route('/grafic/ultim')
             @self.app.route('/grafic/')
             def grafic_ultim():
-                return render_template('taules.html')
+                return render_template('pages/taules.html')
 
             @self.app.route('/grafic/setmana')
             def grafic_setmana():
-                return render_template('taules.html')
+                return render_template('pages/taules.html')
 
             @self.app.route('/grafic/setmana/pasada')
             def grafic_setmana_pasada():
-                return render_template('taules.html')
+                return render_template('pages/taules.html')
 
 
-            ## GRAFICS
+            ## TAULES
             @self.app.route('/taula/ultim')
             @self.app.route('/taula/')
             def taula_ultima():
-                return render_template('taules.html')
+                return render_template('pages/taules.html')
 
             @self.app.route('/taula/setmana')
             def taula_setmana():
-                return render_template('taules.html')
+                return render_template('pages/taules.html')
 
             @self.app.route('/taula/setmana/pasada')
             def taula_setmana_pasada():
-                return render_template('taules.html')
+                return render_template('pages/taules.html')
+
+            @self.app.route('/taula/<proposta>')
+            def taula_una():
+                return render_template('pages/taules.html')
 
 
 
