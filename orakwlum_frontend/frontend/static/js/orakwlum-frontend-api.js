@@ -89,7 +89,7 @@ function get_proposals(setMain, on="execucio", tipus="chart"){
 
                     $(parentDiv).append(table_type_selector(last));
 
-                    $(parentDiv).append("<div id='" + child_div + "'></div>");
+                    $(parentDiv).append("<div id='" + child_div + "' class='col-md-4'></div>");
 
                     create_table("#" + child_div, last);
 
