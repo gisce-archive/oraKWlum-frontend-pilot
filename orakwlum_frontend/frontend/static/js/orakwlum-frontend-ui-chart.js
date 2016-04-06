@@ -221,7 +221,7 @@ function graphic_type_selector(id){
         "<input type=radio name='" + id + "' value='area' checked> Àrea&nbsp;&nbsp;" +
         "<input type=radio name='" + id + "' value='line'> Línies&nbsp;&nbsp;" +
         "<input type=radio name='" + id + "' value='bar'> Barres&nbsp;&nbsp;" +
-        "<input type=radio name='" + id + "' value='all'> Conjut&nbsp;&nbsp;" +
+        "<input type=radio name='" + id + "' value='all'> Conjunt&nbsp;&nbsp;" +
         "</div></form>";
       //  */
 

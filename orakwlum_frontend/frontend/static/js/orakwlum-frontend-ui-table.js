@@ -77,7 +77,7 @@ function table_type_selector(id) {
 
         "<input type=radio name='" + id + "' value='text'> Text&nbsp;&nbsp;" +
         "<input type=radio name='" + id + "' value='bar'> Barres&nbsp;&nbsp;" +
-        "<input type=radio name='" + id + "' value='all' checked> Conjut&nbsp;&nbsp;" +
+        "<input type=radio name='" + id + "' value='all' checked> Conjunt&nbsp;&nbsp;" +
         "</div></form>";
 }
 
