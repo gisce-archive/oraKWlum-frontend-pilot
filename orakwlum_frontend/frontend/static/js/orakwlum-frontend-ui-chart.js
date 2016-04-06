@@ -276,8 +276,6 @@ function append_chart(div, id, type){
         $("input[name='" + id + "']").change(radioChartValueChanged);
     }
 
-
-
     //insert the chart
     create_chart("#"+child_div,id,type);
 

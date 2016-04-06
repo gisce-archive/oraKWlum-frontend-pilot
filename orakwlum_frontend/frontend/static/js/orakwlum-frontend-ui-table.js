@@ -65,7 +65,7 @@ function create_table_odded (nom, scenarios, div, type) {
 
     table = '<table class="table table-striped table-bordered" style="table-layout: fixed;" id="' + nom + '" max="' + max_value + '">' + table;
 
-    $(div).html(table);
+    $(div).append(table);
 
     change_table_type(div, last, type, max_value);
 }
@@ -106,11 +106,15 @@ function reset_table(div, id, type){
 
 function change_table_type(div, id, type, max_value=null) {
 
+    //set the table container on the filter expression
+    div += " table";
+
+
+    if (max_value == null)
+        max_value = $(div + "").attr("max");
+
     if (max_value==0)
         return;
-
-    if (max_value==null)
-        max_value = $(div + " > table").attr("max");
 
     switch(type) {
         case 'bar':

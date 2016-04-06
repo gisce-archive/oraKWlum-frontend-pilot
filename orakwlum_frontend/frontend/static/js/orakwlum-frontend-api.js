@@ -69,17 +69,7 @@ function get_proposals(setMain, on="execucio", tipus="chart"){
                 //last = $( '#llistat_historic > ul > li:last-child > a').href();
 
 
-                switch (tipus){
-                    case "chart":
-                        child_div = "chart_" + last;
-                        break;
-
-                    case "table":
-                        child_div = "table_" + last;
-                        break;
-                }
-
-                append_element(parentDiv, last, child_div, tipus);
+                append_element(parentDiv, last, tipus);
             }
         },
 
@@ -110,32 +100,46 @@ function get_selector_listener (type){
     }
 }
 
-function get_constructor(type, div, last){
+function get_constructor(type, div, child, last){
 
     switch (type){
         case "chart":
-            return create_chart(div, last);
+            return create_chart(child, last);
             break;
 
         case "table":
-            return create_table(div, last);
+            return create_table(child, last);
             break;
     }
 
 }
 
-function append_element(parentDiv, last, child_div, type){
+function append_element(parentDiv, last, tipuss){
 
-    console.log(parentDiv, last, child_div, type);
+    //assert tipus array
+    if (typeof(tipuss) != Array) {
+        tipuss = tipuss.replace(/ /g,'');
+        tipuss = tipuss.split(',');
+    }
 
-    $(parentDiv).append("<h3 class='grafic_title'>" + convert_date_to_title(last) + "</h3>");
-    $(parentDiv).append(get_selector(type, last));
-    $(parentDiv).append("<div id='" + child_div + "' class=''></div>");
+    //For each tipus append element
+    for (i=0 ; i < tipuss.length; i++){
 
-    get_constructor(type, parentDiv, last);
-    //get_constructor(type, "#" + child_div, last);
+        tipus=tipuss[i];
 
-    $("input[name='" + last + "']").change(get_selector_listener(type));
+        child_div = tipus + "_" + last;
+
+        if (i==0)  //Set title just for the first element
+            $(parentDiv).append("<h3 class='grafic_title'>" + convert_date_to_title(last) + "</h3>");
+
+        $(parentDiv).append(get_selector(tipus, last));
+        $(parentDiv).append("<div id='" + child_div + "' class=''></div>");
+
+        get_constructor(tipus, parentDiv, "#" + child_div, last);
+        //get_constructor(tipus, "#" + child_div, last);
+
+        $("input[name='" + last + "']").change(get_selector_listener(tipus));
+    }
 }
 
 
@@ -152,7 +156,6 @@ function create_chart(div, id, type){
         dataType: 'json',
 
         success: function (data, status, jqXHR) {
-              console.log(div)
 
             switch(type) {
                 default:
@@ -187,7 +190,6 @@ function create_table(div, id, type){
         dataType: 'json',
 
         success: function (data, status, jqXHR) {
-            //  console.log(div)
             create_table_odded (data.name, data.scenarios, div, type);
         },
 

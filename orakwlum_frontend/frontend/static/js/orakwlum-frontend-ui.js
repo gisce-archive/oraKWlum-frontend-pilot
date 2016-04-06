@@ -40,7 +40,6 @@ function append_hist(name, on="execucio", metode="append_chart") {
 }
 
 
-
 //From a string like "160401_160402" convert it to a Chart Title
 function convert_date_to_title (string, lite) {
     //Lite week days (abreviated version)
@@ -85,7 +84,6 @@ function create_radio_box(id, value, text, selected){
             '</label>';
 */
 }
-
 
 
 //Scroll to chart
