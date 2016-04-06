@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>oraKWlum - Dashboard</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='lte/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lte/AdminLTE.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='lte/plugins/iCheck/all.css') }}">
+
+    <!-- TODO Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='lte/_all-skins.min.css') }}">
+
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="{{ url_for('static', filename='js/d3.v3.min.js') }}"></script>
+    <link href="{{ url_for('static', filename='css/nv.d3.min.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='js/nv.d3.min.js') }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/orakwlum-frontend-ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/orakwlum-frontend-ui-chart.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/orakwlum-frontend-ui-table.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/orakwlum-frontend-api.js') }}"></script>
+    <link href="{{ url_for('static', filename='css/orakwlum-frontend.css') }}" rel="stylesheet">
+
+</head>
+
+<body class="hold-transition skin-red sidebar-mini sidebar-collapse">
+<div class="wrapper">
+  <aside class="main-sidebar" >
+    <section class="sidebar">
+      <ul class="sidebar-menu">
+        <li class="header">MAIN NAVIGATION</li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+              <li><a href="{{ url_for('dashboard') }}"><i class="fa fa-circle-o"></i> Històric de propostes</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-folder"></i>
+            <span>Propostes</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{ url_for('proposta_ultim') }}"><i class="fa fa-circle-o"></i> Última proposta</a></li>
+            <li><a href="{{ url_for('proposta_setmana') }}"><i class="fa fa-circle-o"></i> Aquesta setmana</a></li>
+            <li><a href="{{ url_for('proposta_setmana_pasada') }}"><i class="fa fa-circle-o"></i> La setmana passada</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-pie-chart"></i>
+            <span>Gràfics</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{ url_for('grafic_ultim') }}"><i class="fa fa-circle-o"></i> Última proposta</a></li>
+            <li><a href="{{ url_for('grafic_setmana') }}"><i class="fa fa-circle-o"></i> Aquesta setmana</a></li>
+            <li><a href="{{ url_for('grafic_setmana_pasada') }}"><i class="fa fa-circle-o"></i> La setmana passada</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-table"></i> <span>Taules</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{ url_for('taula_ultima') }}"><i class="fa fa-circle-o"></i> Última proposta</a></li>
+            <li><a href="{{ url_for('taula_setmana') }}"><i class="fa fa-circle-o"></i> Aquesta setmana</a></li>
+            <li><a href="{{ url_for('taula_setmana_pasada') }}"><i class="fa fa-circle-o"></i> La setmana passada</a></li>
+          </ul>
+        </li>
+
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-share"></i> <span>Processar proposta</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="#"><i class="fa fa-circle-o"></i> Escollir escenari</a></li>
+            <li><a href="#"><i class="fa fa-circle-o"></i> Enviar cap a ERP</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </section>
+  </aside>
+
+    {% block body %}{% endblock %}
+
+
+
+  <footer class="main-footer">
+    <div class="pull-right hidden-xs">
+      <b>Versió</b> 1.0.3 (alpha)
+    </div>
+    <strong><a target="_blank" href="http://gisce.net">GISCE-TI</a> - 2016</strong>
+  </footer>
+
+</div>
+
+<script src="{{ url_for('static', filename='lte/jQuery-2.1.4.min.js') }}"></script>
+<script src="{{ url_for('static', filename='lte/bootstrap.min.js') }}"></script>
+
+<!--
+<script src="../../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="../../plugins/fastclick/fastclick.js"></script>
+<script src="{{ url_for('static', filename='lte/app.min.js') }}"></script>
+-->
+
+
+<script src="{{ url_for('static', filename='lte/plugins/iCheck/icheck.min.js') }}"></script>
+
+
+    {% block code %}{% endblock %}
+
+
+</body>
+</html>

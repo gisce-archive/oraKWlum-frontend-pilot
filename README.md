@@ -44,4 +44,19 @@ Open your favourite browser and **enjoy** at [http://127.0.0.1:8000](http://127.
 
 ## Screenshots
 
-![Prediction1](https://raw.githubusercontent.com/gisce/oraKWlum-frontend/master/screenshots/demo.png)
+### Proposal view
+![Proposal](https://raw.githubusercontent.com/gisce/oraKWlum-frontend/master/screenshots/proposal.png)
+![Proposal](https://raw.githubusercontent.com/gisce/oraKWlum-frontend/master/screenshots/proposal2.png)
+![Proposal](https://raw.githubusercontent.com/gisce/oraKWlum-frontend/master/screenshots/proposal3.png)
+
+### Chart view
+![Chart](https://raw.githubusercontent.com/gisce/oraKWlum-frontend/master/screenshots/chart.png)
+![Chart](https://raw.githubusercontent.com/gisce/oraKWlum-frontend/master/screenshots/chart2.png)
+![Chart](https://raw.githubusercontent.com/gisce/oraKWlum-frontend/master/screenshots/chart3.png)
+![Chart](https://raw.githubusercontent.com/gisce/oraKWlum-frontend/master/screenshots/chart4.png)
+
+### Table view
+![Table](https://raw.githubusercontent.com/gisce/oraKWlum-frontend/master/screenshots/table.png)
+![Table](https://raw.githubusercontent.com/gisce/oraKWlum-frontend/master/screenshots/table2.png)
+![Table](https://raw.githubusercontent.com/gisce/oraKWlum-frontend/master/screenshots/table3.png)
+![Table](https://raw.githubusercontent.com/gisce/oraKWlum-frontend/master/screenshots/table4.png)

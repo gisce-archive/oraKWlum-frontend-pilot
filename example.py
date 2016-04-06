@@ -6,7 +6,7 @@ import time
 
 frontend = Frontend(port=8000)
 
-api = Api(settings="orakwlum_frontend/api/settings.py")
+api = Api(host="0.0.0.0", settings="orakwlum_frontend/api/settings.py")
 
 while True:
     # Do something
