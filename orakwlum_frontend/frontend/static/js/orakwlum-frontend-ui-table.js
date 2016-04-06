@@ -37,7 +37,7 @@ function create_table_odded (nom, scenarios, div, type) {
     max_value = 0;
 
     // Set table header and reach the max value
-    table = '<tr><th>Hora</th>';
+    table = '<tr><th style="width: 100px">Hora</th>';
 
     for (i=0; i< num_scenarios; i++) {
         table += '<th>' + scenarios[i].name + '</th>';
@@ -46,7 +46,7 @@ function create_table_odded (nom, scenarios, div, type) {
     // Prepare table content and set max values
     for (hora = 0; hora < num_hores; hora++) {
         horaa = new Date(scenarios[0].prediction[hora]._id);
-        tr = '<tr><td width="20%">' + getFormatedTime(horaa); + '</td>';
+        tr = '<tr><td>' + getFormatedTime(horaa); + '</td>';
         $.each(scenarios, function (idxScenario, scenario) {
 
             prediction = scenario.prediction[hora];
@@ -63,7 +63,7 @@ function create_table_odded (nom, scenarios, div, type) {
     table += '</table>' +
         '</div>';
 
-    table = '<table class="table table-striped" id="' + nom + '" max="' + max_value + '">' + table;
+    table = '<table class="table table-striped table-bordered" style="table-layout: fixed;" id="' + nom + '" max="' + max_value + '">' + table;
 
     $(div).html(table);
 
@@ -75,9 +75,9 @@ function table_type_selector(id) {
     return "<form>" +
         '<div class="form-group pull-right  ">' +
 
-        "<input type=radio name='" + id + "' value='text' checked> Text&nbsp;&nbsp;" +
+        "<input type=radio name='" + id + "' value='text'> Text&nbsp;&nbsp;" +
         "<input type=radio name='" + id + "' value='bar'> Barres&nbsp;&nbsp;" +
-        "<input type=radio name='" + id + "' value='all'> Conjut&nbsp;&nbsp;" +
+        "<input type=radio name='" + id + "' value='all' checked> Conjut&nbsp;&nbsp;" +
         "</div></form>";
 }
 
@@ -107,7 +107,7 @@ function reset_table(div, id, type){
 function change_table_type(div, id, type, max_value=null) {
 
     if (max_value==0)
-        return
+        return;
 
     if (max_value==null)
         max_value = $(div + " > table").attr("max");
@@ -131,6 +131,7 @@ function change_table_type(div, id, type, max_value=null) {
             });
             break;
 
+        default:
         case 'all':
             //Append colored bar for each consumption   [not done previously to avoid process N elements over scenarios to fetch the max]
             $(div + " .consumption").each( function(id, val) {
@@ -138,8 +139,8 @@ function change_table_type(div, id, type, max_value=null) {
                 colorr=($(this).attr("color"));
 
                 //Set text and later progressbar
-                $(this).html(valuee);
-                $(this).append(getProgressBar(valuee/max_value*100, colorr));
+                $(this).html(getProgressBar(valuee/max_value*100, colorr));
+                $(this).append(valuee);
             });
             break;
     }
