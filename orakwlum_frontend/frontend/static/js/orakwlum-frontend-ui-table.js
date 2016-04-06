@@ -69,17 +69,25 @@ function create_table_odded (nom, scenarios, div, type) {
 
     $(div).html(table);
 
-    if (type == "bar") {
-        //Apply colored bar for each consumption   [not done previously to avoid process N elements over scenarios to fetch the max]
-        $(".consumption").each( function(id, val) {
-            valuee=($(this).attr("value"));
-            colorr=($(this).attr("color"));
+    switch(type) {
+        case 'bar':
+            //Apply colored bar for each consumption   [not done previously to avoid process N elements over scenarios to fetch the max]
+            $(".consumption").each( function(id, val) {
+                valuee=($(this).attr("value"));
+                colorr=($(this).attr("color"));
+                $(this).html(getProgressBar(valuee/max_value*100, colorr));
+            });
+            break;
 
-            $(this).html(getProgressBar(valuee/max_value*100, colorr));
-
-        });
+        case 'all':
+            //Append colored bar for each consumption   [not done previously to avoid process N elements over scenarios to fetch the max]
+            $(".consumption").each( function(id, val) {
+                valuee=($(this).attr("value"));
+                colorr=($(this).attr("color"));
+                $(this).append(getProgressBar(valuee/max_value*100, colorr));
+            });
+            break;
     }
-
 }
 
 function table_type_selector(id) {
