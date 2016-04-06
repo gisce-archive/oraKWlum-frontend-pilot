@@ -22,7 +22,7 @@ function getProgressBar(amount, color=0) {
 }
 
 //Create a new odded table
-function create_table_odded (nom, scenarios, div) {
+function create_table_odded (nom, scenarios, div, type) {
 
     table = '<div class="box-header"><h3 class="box-title">' + nom + '</h3></div>' +
         '<div class="box-body no-padding">';
@@ -42,15 +42,11 @@ function create_table_odded (nom, scenarios, div) {
 
     for (i=0; i< numScenarios; i++) {
         table += '<th>' + scenarios[i].name + '</th>';
-
-        console.log(scenarios[i].prediction);
-
     }
 
     // Prepare table content and set max values
     for (hora=0; hora<numHores; hora++) {
         horaa = new Date(scenarios[0].prediction[hora]._id);
-        console.log(scenarios[0].prediction[hora]._id);
         tr = '<tr><td>' + getFormatedTime(horaa); + '</td>';
         $.each(scenarios, function (idxScenario, scenario) {
 
@@ -73,7 +69,7 @@ function create_table_odded (nom, scenarios, div) {
 
     $(div).html(table);
 
-    if (1) {
+    if (type == "bar") {
         //Apply colored bar for each consumption   [not done previously to avoid process N elements over scenarios to fetch the max]
         $(".consumption").each( function(id, val) {
             valuee=($(this).attr("value"));
@@ -86,7 +82,15 @@ function create_table_odded (nom, scenarios, div) {
 
 }
 
+function table_type_selector(id) {
+    return "<form>" +
+        '<div class="form-group pull-right  ">' +
 
+        "<input type=radio name='" + id + "' value='text' checked> Text&nbsp;&nbsp;" +
+        "<input type=radio name='" + id + "' value='bar'> Barres&nbsp;&nbsp;" +
+        "<input type=radio name='" + id + "' value='all'> Conjut&nbsp;&nbsp;" +
+        "</div></form>";
+}
 
 //Append new table
 function append_table(div, id, type){
@@ -97,14 +101,37 @@ function append_table(div, id, type){
     if ($("#"+child_div).length==0){
 
         $(div).append("<div><h3 class='grafic_title'>"+ convert_date_to_title(id));
-        $(div).append(graphic_type_selector(id));
+        $(div).append(table_type_selector(id));
         $(div).append("<div id=" + child_div +" class='taula'></div></div>");
 
-        $("input[name='" + id + "']").change(radioValueChanged);
+        $("input[name='" + id + "']").change(radioTableValueChanged);
     }
 
     //insert the chart
     create_table("#"+child_div,id,type);
 
     go_to_div ("#" + child_div);
+}
+
+
+
+//onChange chart type trigger
+function radioTableValueChanged() {
+    name = $(this).attr('name');
+    type = $(this).val();
+
+    reset_table(name, name, type);
+}
+
+//Clean an existing chart
+function reset_table(div, id, type){
+
+    child_div = "table_" + id
+
+    //Delete previous chart
+    $("#"+child_div + " table").remove();
+
+    create_table("#"+child_div,id,type);
+    //alert("change");
+
 }

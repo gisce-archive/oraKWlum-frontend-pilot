@@ -77,11 +77,25 @@ function get_proposals(setMain, on="execucio", tipus="chart"){
                     $(parentDiv).append("<div id='" + child_div + "'><svg class='nvd3-svg'></svg></div>");
                     create_chart(parentDiv, last);
 
-                    $("input[name='" + last + "']").change(radioValueChanged);
+                    $("input[name='" + last + "']").change(radioChartValueChanged);
 
                 }
                 else if (tipus == "taula") {
-                    create_table(parentDiv, last);
+
+                    // /*
+                    child_div = "table_" + last;
+
+                    $(parentDiv).append("<h3 class='grafic_title'>" + convert_date_to_title(last) + "</h3>");
+
+                    $(parentDiv).append(table_type_selector(last));
+
+                    $(parentDiv).append("<div id='" + child_div + "'></div>");
+
+                    create_table("#" + child_div, last);
+
+                    $("input[name='" + last + "']").change(radioTableValueChanged);
+
+                   // */
                 }
             }
         },
@@ -136,7 +150,7 @@ function create_table(div, id, type){
 
         success: function (data, status, jqXHR) {
             //  console.log(div)
-            create_table_odded (data.name, data.scenarios, div);
+            create_table_odded (data.name, data.scenarios, div, type);
         },
 
         error: function (jqXHR, status) {

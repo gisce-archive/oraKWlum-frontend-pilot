@@ -239,7 +239,7 @@ function graphic_type_selector(id){
 
 
 //onChange chart type trigger
-function radioValueChanged() {
+function radioChartValueChanged() {
     name = $(this).attr('name');
     type = $(this).val();
 
@@ -272,7 +272,7 @@ function append_chart(div, id, type){
         $(div).append(graphic_type_selector(id));
         $(div).append("<div id=" + child_div +" class='grafic'><svg class='nvd3-svg'></svg></div></div>");
 
-        $("input[name='" + id + "']").change(radioValueChanged);
+        $("input[name='" + id + "']").change(radioChartValueChanged);
     }
 
     //insert the chart
