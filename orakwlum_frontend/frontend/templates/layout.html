@@ -48,6 +48,18 @@
           </ul>
         </li>
 
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-folder"></i>
+            <span>Propostes</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{ url_for('proposta_ultim') }}"><i class="fa fa-circle-o"></i> Última proposta</a></li>
+            <li><a href="{{ url_for('proposta_setmana') }}"><i class="fa fa-circle-o"></i> Aquesta setmana</a></li>
+            <li><a href="{{ url_for('proposta_setmana_pasada') }}"><i class="fa fa-circle-o"></i> La setmana passada</a></li>
+          </ul>
+        </li>
 
         <li class="treeview">
           <a href="#">

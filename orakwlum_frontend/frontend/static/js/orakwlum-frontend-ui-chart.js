@@ -260,10 +260,11 @@ function reset_chart(div, id, type){
 }
 
 
+
 //Append new chart proposal
 function append_chart(div, id, type){
 
-    child_div = "chart_" + id
+    child_div = "chart_" + id;
 
     //create a child element on Proposals zone if not exists
     if ($("#"+child_div).length==0){
@@ -274,6 +275,8 @@ function append_chart(div, id, type){
 
         $("input[name='" + id + "']").change(radioChartValueChanged);
     }
+
+
 
     //insert the chart
     create_chart("#"+child_div,id,type);

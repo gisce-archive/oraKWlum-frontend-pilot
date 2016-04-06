@@ -69,34 +69,17 @@ function get_proposals(setMain, on="execucio", tipus="chart"){
                 //last = $( '#llistat_historic > ul > li:last-child > a').href();
 
 
-                if (tipus == "chart") {
-                    child_div = "chart_" + last;
+                switch (tipus){
+                    case "chart":
+                        child_div = "chart_" + last;
+                        break;
 
-                    $(parentDiv).append("<h3 class='grafic_title'>" + convert_date_to_title(last) + "</h3>");
-                    $(parentDiv).append(graphic_type_selector(last));
-                    $(parentDiv).append("<div id='" + child_div + "'><svg class='nvd3-svg'></svg></div>");
-                    create_chart(parentDiv, last);
-
-                    $("input[name='" + last + "']").change(radioChartValueChanged);
-
+                    case "table":
+                        child_div = "table_" + last;
+                        break;
                 }
-                else if (tipus == "taula") {
 
-                    // /*
-                    child_div = "table_" + last;
-
-                    $(parentDiv).append("<h3 class='grafic_title'>" + convert_date_to_title(last) + "</h3>");
-
-                    $(parentDiv).append(table_type_selector(last));
-
-                    $(parentDiv).append("<div id='" + child_div + "' class=''></div>");
-
-                    create_table("#" + child_div, last);
-
-                    $("input[name='" + last + "']").change(radioTableValueChanged);
-
-                   // */
-                }
+                append_element(parentDiv, last, child_div, tipus);
             }
         },
 
@@ -106,15 +89,70 @@ function get_proposals(setMain, on="execucio", tipus="chart"){
     });
 }
 
+function get_selector(type, last){
+    switch (type){
+        case "chart":
+            return graphic_type_selector(last);
+
+        case "table":
+            return table_type_selector(last);
+            break;
+    }
+}
+function get_selector_listener (type){
+    switch (type){
+        case "chart":
+            return radioChartValueChanged;
+
+        case "table":
+            return radioTableValueChanged;
+            break;
+    }
+}
+
+function get_constructor(type, div, last){
+
+    switch (type){
+        case "chart":
+            return create_chart(div, last);
+            break;
+
+        case "table":
+            return create_table(div, last);
+            break;
+    }
+
+}
+
+function append_element(parentDiv, last, child_div, type){
+
+    console.log(parentDiv, last, child_div, type);
+
+    $(parentDiv).append("<h3 class='grafic_title'>" + convert_date_to_title(last) + "</h3>");
+    $(parentDiv).append(get_selector(type, last));
+    $(parentDiv).append("<div id='" + child_div + "' class=''></div>");
+
+    get_constructor(type, parentDiv, last);
+    //get_constructor(type, "#" + child_div, last);
+
+    $("input[name='" + last + "']").change(get_selector_listener(type));
+}
+
 
 //Create new proposal chart handling type
 function create_chart(div, id, type){
+
+    //assert SVG inside child_div
+    if ($(div + " svg").length==0) {
+        $(div).append("<svg class='nvd3-svg'></svg>");
+    }
+
     $.ajax({
         url: 'http://127.0.0.1:5000/proposals/' + id,
         dataType: 'json',
 
         success: function (data, status, jqXHR) {
-            //  console.log(div)
+              console.log(div)
 
             switch(type) {
                 default:

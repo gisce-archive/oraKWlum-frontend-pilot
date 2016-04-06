@@ -47,6 +47,21 @@ class Frontend(object):
                 return render_template('pages/dashboard.html')
 
 
+            ## PROPOSTES
+            @self.app.route('/propostes/ultim')
+            @self.app.route('/propostes/')
+            def proposta_ultim():
+                return render_template('pages/propostes/ultim.html')
+
+            @self.app.route('/propostes/setmana')
+            def proposta_setmana():
+                return render_template('pages/propostes/setmana.html')
+
+            @self.app.route('/propostes/setmana/pasada')
+            def proposta_setmana_pasada():
+                return render_template('pages/propostes/setmana_passada.html')
+
+
             ## GRAFICS
             @self.app.route('/grafic/ultim')
             @self.app.route('/grafic/')
