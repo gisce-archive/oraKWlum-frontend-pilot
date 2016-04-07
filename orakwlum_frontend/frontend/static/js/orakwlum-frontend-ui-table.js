@@ -53,7 +53,7 @@ function create_table_odded (nom, scenarios, div, type) {
 
             //console.log(hora + scenario.name + " " + prediction.sum_consumption_proposal);
 
-            tr += '<td class="consumption" color="' + idxScenario + '" value=" ' + prediction.sum_consumption_proposal + '">' + prediction.sum_consumption_proposal + '</td>';
+            tr += '<td class="consumption" color="' + idxScenario + '" value=" ' + Number(prediction.sum_consumption_proposal).toFixed(2) + '">' + Number(prediction.sum_consumption_proposal).toFixed(2) + '</td>';
 
             max_value = Math.max(max_value, prediction.sum_consumption_proposal);
 
