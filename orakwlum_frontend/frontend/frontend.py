@@ -11,7 +11,7 @@ from flask import Flask, render_template, request
 
 
 class Frontend(object):
-    PORT = 8000
+    PORT = 80
 
     app = Flask(__name__)
 

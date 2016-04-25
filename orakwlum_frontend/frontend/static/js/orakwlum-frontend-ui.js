@@ -33,7 +33,12 @@ function clear_hist() {
 }
 
 //Append history to right history Proposals menu
-function append_hist(name, on="execucio", metode="append_chart") {
+//function append_hist(name, on="execucio", metode="append_chart") {
+function append_hist(name, on, metode) {
+
+    if (typeof(on) == undefined) on="execucio";
+    if (typeof(metode) == undefined) metode = "append_chart";
+
 
     $('#llistat_historic ul').append("<li><a id='" + name + "' href='javascript:"+ metode + "(\"#" + on + "\", \""+ name + "\");' draggable='true' ondragstart='drag(event)'>"
         + convert_date_to_title(name,1)+"</a></li>");

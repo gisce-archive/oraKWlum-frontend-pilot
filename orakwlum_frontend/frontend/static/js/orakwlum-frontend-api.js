@@ -25,7 +25,11 @@ if (!currentPage)
 
 //Fetch all proposals and initializates the right history menu
 //  If main execucion -> autoloads the last execution on main section
-function get_proposals(setMain, on="execucio", tipus="chart"){
+//function get_proposals(setMain, on="execucio", tipus="chart"){
+function get_proposals(setMain, on, tipus){
+
+    if (typeof(on) == undefined) on="execucio";
+    if (typeof(tipus) == undefined) tipus="chart";
 
     //set action create or append
     metode = (on == "execucio_ultima")? "create_":"append_";
@@ -37,7 +41,7 @@ function get_proposals(setMain, on="execucio", tipus="chart"){
         setMain = false;
 
     $.ajax({
-        url: 'http://127.0.0.1:5000/proposals?sort=-_id&max_results='+ max_elements + '&page='+ currentPage,
+        url: 'http://orakwlum.gisce.net:5000/proposals?sort=-_id&max_results='+ max_elements + '&page='+ currentPage,
         dataType: 'json',
 
         success: function (data, status, jqXHR) {
@@ -115,6 +119,7 @@ function get_constructor(type, div, child, last){
 }
 
 function append_element(parentDiv, last, tipuss){
+//    if (typeof(tipuss) == "undefined") alert("lol");
 
     //assert tipus array
     if (typeof(tipuss) != Array) {
@@ -152,7 +157,7 @@ function create_chart(div, id, type){
     }
 
     $.ajax({
-        url: 'http://127.0.0.1:5000/proposals/' + id,
+        url: 'http://orakwlum.gisce.net:5000/proposals/' + id,
         dataType: 'json',
 
         success: function (data, status, jqXHR) {
@@ -186,7 +191,7 @@ function create_chart(div, id, type){
 //Create new proposal table
 function create_table(div, id, type){
     $.ajax({
-        url: 'http://127.0.0.1:5000/proposals/' + id,
+        url: 'http://orakwlum.gisce.net:5000/proposals/' + id,
         dataType: 'json',
 
         success: function (data, status, jqXHR) {

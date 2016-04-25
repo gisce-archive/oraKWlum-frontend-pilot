@@ -1,0 +1,85 @@
+#! /bin/bash
+### BEGIN INIT INFO
+# Provides:          oraKWlum-frontend
+# Default-Start:     S
+# Default-Stop:      0 6
+# Short-Description: oraKWlum-fronted server
+# Description:       Starts oraKWlum web interface and Mongo REST API
+### END INIT INFO
+
+PATHH=/home/orakwlum/orakwlum/bin
+
+export PATH=$PATHH:$PATH
+export VIRTUAL_ENV="/home/orakwlum/orakwlum"
+
+DAEMON=$PATHH/python2.7
+ARGS=/opt/oraKWlum-frontend/start.py
+
+NAME="oraKWlum-frontend"
+
+USER=orakwlum
+GROUP=$USER
+
+PIDFILE=/var/run/oraKWlum-frontend.pid
+LOG=/var/log/oraKWlum-frontend.log
+
+start_server (){
+    echo "Starting $NAME server"
+    /sbin/start-stop-daemon --start --pidfile $PIDFILE \
+        --user $USER --group $GROUP \
+        -b --make-pidfile \
+        --chuid $USER \
+        --exec $DAEMON $ARGS > $LOG
+}
+
+stop_server (){
+    echo "Stopping $NAME server"
+    /sbin/start-stop-daemon --stop --pidfile $PIDFILE
+}
+
+status_server () {
+    if [ ! -f $PIDFILE ]; then
+	state="KO"
+	rc=1
+    else  
+    	if ps -p `cat $PIDFILE` > /dev/null; then
+		state="OK"
+		rc=0
+        else
+		state="KO"
+		rc=1
+        fi
+    fi
+
+    if [ ! "$1" ]; then
+	    echo "$NAME is $state"
+    fi
+    return $rc
+}
+
+case "$1" in
+  start)
+	start_server
+    ;;
+  stop)
+        if status_server "silent"; then
+		stop_server
+        else
+		echo "$NAME is currently DOWN"
+	fi
+    ;;
+  restart)
+	stop_server
+	sleep 3	 #to avoid troubles at restart on the same port
+	start_server
+    ;;
+  status)
+	status_server
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|status}"
+    exit 1
+    ;;
+esac
+
+exit 0
