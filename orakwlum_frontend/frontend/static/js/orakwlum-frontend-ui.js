@@ -15,7 +15,7 @@ $.urlParam = function(name){
     }
 }
 
-var max_elements = 8;
+var max_elements = 6;
 var currentPage = $.urlParam("page");
 var maxPage = currentPage;
 
@@ -24,7 +24,6 @@ if (!currentPage)
 
 var days_in_week = ["Diumenge", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Divendres", "Dissabte"];
 var days_in_week_lite = ["Dg", "Dl", "Dm", "Dx", "Dj", "Dv", "Ds"];
-
 
 
 //Clean right history Proposals menu
@@ -100,22 +99,11 @@ function go_to_div (div) {
 
 //Validate paginator UI
 function validatePaginator(current,max) {
-    if (current==max) {
-        $("#nextPage").hide();
-        $("#prevPage").show();
-    }
+    // Review prevPage
+    (current == 1) ? $("#prevPage").hide() : $("#prevPage").show();
 
-    else if (current==1) {
-        $("#nextPage").show();
-        $("#prevPage").hide();
-    }
-
-    else {
-        $("#nextPage").show();
-        $("#prevPage").show();
-    }
-
-
+    // Review nextPage
+    (current<max) ? $("#nextPage").show() : $("#nextPage").hide();
 }
 
 //Increase Pager

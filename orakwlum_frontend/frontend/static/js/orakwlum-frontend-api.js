@@ -15,7 +15,7 @@ $.urlParam = function(name){
     }
 }
 
-var max_elements = 8;
+var max_elements = 6;
 var currentPage = $.urlParam("page");
 var maxPage = currentPage;
 
@@ -60,7 +60,7 @@ function get_proposals(setMain, on, tipus){
                 append_hist(value.name, on, metode);
             });
 
-            maxPage = (Math.round(data._meta.total/max_elements));
+            maxPage = (Math.ceil(data._meta.total/max_elements));
 
             validatePaginator(currentPage, maxPage);
 
@@ -119,10 +119,10 @@ function get_constructor(type, div, child, last){
 }
 
 function append_element(parentDiv, last, tipuss){
-//    if (typeof(tipuss) == "undefined") alert("lol");
+    if (typeof(tipuss) == "undefined") return;
 
     //assert tipus array
-    if (typeof(tipuss) != Array) {
+    if (typeof(tipuss) != "Array") {
         tipuss = tipuss.replace(/ /g,'');
         tipuss = tipuss.split(',');
     }
