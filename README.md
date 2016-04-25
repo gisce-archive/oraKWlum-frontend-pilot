@@ -25,6 +25,41 @@ MONGO_DBNAME = 'orakwlum'
 
 2. Start the servers
 
+### Daemonizing oraKWlum-frontend
+
+It's simple, just adapt and deploy the [oraKWlum-frontend init.d script file](https://github.com/gisce/oraKWlum-frontend/blob/master/utils/oraKWlum-frontend)
+
+* Take care to adapt the following VARS to your installation:
+
+```
+ORA_PATHH
+ENV_PATHH
+USER
+GROUP
+``` 
+
+* Copy it to the init.d
+```
+$ cp utils/orakwlum-frontend /etc/init.d/
+```
+
+* Ensure that the script can be executed
+```
+$ chmod +x /etc/init.d/orakwlum-frontend
+```
+
+* Start it!
+```
+$ /etc/init.d/orakwlum-frontend start
+```
+
+* Finally, think about if it's needed to start it at boot time
+
+
+
+
+### From scratch
+
 ```
 from orakwlum_frontend import *
 

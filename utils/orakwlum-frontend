@@ -7,18 +7,26 @@
 # Description:       Starts oraKWlum web interface and Mongo REST API
 ### END INIT INFO
 
-PATHH=/home/orakwlum/orakwlum/bin
 
-export PATH=$PATHH:$PATH
-export VIRTUAL_ENV="/home/orakwlum/orakwlum"
+# oraKWlum-frontend path
+ORA_PATHH=/opt/oraKWlum-frontend
 
-DAEMON=$PATHH/python2.7
-ARGS=/opt/oraKWlum-frontend/start.py
-
-NAME="oraKWlum-frontend"
+# Virtualenv path
+VIRTUAL_ENV=/home/orakwlum/orakwlum
+ENV_PATHH=$VIRTUAL_ENV/bin
 
 USER=orakwlum
 GROUP=$USER
+
+
+#### Don't touch it! ####
+export PATH=$ENV_PATHH:$PATH
+export VIRTUAL_ENV
+
+DAEMON=$ENV_PATHH/python2.7
+ARGS=$ORA_PATHH/start.py
+
+NAME="oraKWlum-frontend"
 
 PIDFILE=/var/run/oraKWlum-frontend.pid
 LOG=/var/log/oraKWlum-frontend.log
