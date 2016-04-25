@@ -100,22 +100,11 @@ function go_to_div (div) {
 
 //Validate paginator UI
 function validatePaginator(current,max) {
-    if (current==max) {
-        $("#nextPage").hide();
-        $("#prevPage").show();
-    }
+    // Review prevPage
+    (current == 1) ? $("#prevPage").hide() : $("#prevPage").show();
 
-    else if (current==1) {
-        $("#nextPage").show();
-        $("#prevPage").hide();
-    }
-
-    else {
-        $("#nextPage").show();
-        $("#prevPage").show();
-    }
-
-
+    // Review nextPage
+    (current<max) ? $("#nextPage").show() : $("#nextPage").hide();
 }
 
 //Increase Pager
