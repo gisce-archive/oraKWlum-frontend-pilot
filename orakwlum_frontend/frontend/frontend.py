@@ -37,7 +37,8 @@ class Frontend(object):
             ## INDEX
             @self.app.route('/')
             def index():
-                return dashboard()
+                return proposta_ultim()
+                #return dashboard()
 
 
 
