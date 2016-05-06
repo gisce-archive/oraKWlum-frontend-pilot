@@ -183,7 +183,6 @@ class Main extends React.Component {
 
 
 
-
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div>
@@ -192,23 +191,25 @@ class Main extends React.Component {
                             title="oKW :: Dashboard"
                             onLeftIconButtonTouchTap={this.handleDrawerToggle}
                             iconElementRight={
-                                 <div>
+                                <div>
                                     <NotificationBadge notificationsList={this.state.messages} icon={<IconMessage />} tooltip="Missatges" textColor="white" badgeColor={blue500}/>
 
                                     <NotificationBadge notificationsList={this.state.notifications} icon={<IconNotification />} tooltip="Notifications" textColor="white" badgeColor={deepOrange500}/>
 
                                     <NotificationBadge notificationsList={this.state.proposals} icon={<IconOrakwlum />} tooltip="Propostes" textColor="black" badgeColor={yellow500}/>
 
-
-                                    <FlatButton label="" disabled={true} />
+                                    <IconButton/>
 
                                     <IconMenu
-                                      iconButtonElement={<IconButton><IconSettings /></IconButton>}
-                                      onChange={this.handleChangeMultiple}
+                                        iconButtonElement={<IconButton><IconSettings /></IconButton>}
+                                        onChange={this.handleChangeMultiple}
+                                        anchorOrigin = {{horizontal: 'left', vertical: 'bottom'}}
+                                        targetOrigin = {{horizontal: 'left', vertical: 'top'}}
                                     >
-                                      <MenuItem value="1" primaryText="Perfil" />
-                                      <MenuItem value="2" primaryText="Administració" />
-                                      <MenuItem value="3" primaryText="Sortir" />
+
+                                        <MenuItem value="1" primaryText="Perfil" />
+                                        <MenuItem value="2" primaryText="Administració" />
+                                        <MenuItem value="3" primaryText="Sortir" />
                                     </IconMenu>
                                 </div>
                             }
@@ -237,7 +238,7 @@ class Main extends React.Component {
                             icon={<IconOrakwlum />}
                         />
 
-                        
+
                         <MenuItem leftIcon={<IconDashboard />} rightIcon={<IconNext />} >Dashboard</MenuItem>
 
                         <Divider />
