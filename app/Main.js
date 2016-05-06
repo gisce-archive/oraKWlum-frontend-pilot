@@ -3,9 +3,24 @@ import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
 //Colors
-import {deepOrange500, yellow500, blue500, white} from 'material-ui/styles/colors';
+import {
+    deepOrange500,
+    deepOrange300,
+    yellow500,
+    blue500,
+    white,
+
+    orange700,
+    orange400,
+    amber400,
+    amber200,
+
+} from 'material-ui/styles/colors';
+
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+
+
 
 //Buttons
 import FlatButton from 'material-ui/FlatButton';
@@ -72,9 +87,14 @@ const styles = {
 
 const muiTheme = getMuiTheme({
     palette: {
-        accent1Color: deepOrange500,
+        primary1Color: orange400,
+        primary2Color: orange400,
+        primary3Color: amber200,
     },
 });
+
+//        accent1Color: deepOrange500,
+
 
 class Main extends React.Component {
     constructor(props, context) {
