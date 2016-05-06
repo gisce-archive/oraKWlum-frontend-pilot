@@ -192,32 +192,27 @@ class Main extends React.Component {
                             title="oKW :: Dashboard"
                             onLeftIconButtonTouchTap={this.handleDrawerToggle}
                             iconElementRight={
+                                 <div>
+                                    <NotificationBadge notificationsList={this.state.messages} icon={<IconMessage />} tooltip="Missatges" textColor="white" badgeColor={blue500}/>
 
-                         <div>
+                                    <NotificationBadge notificationsList={this.state.notifications} icon={<IconNotification />} tooltip="Notifications" textColor="white" badgeColor={deepOrange500}/>
 
-                            <NotificationBadge notificationsList={this.state.messages} icon={<IconMessage />} tooltip="Missatges" textColor="white" badgeColor={blue500}/>
-
-                            <NotificationBadge notificationsList={this.state.notifications} icon={<IconNotification />} tooltip="Notifications" textColor="white" badgeColor={deepOrange500}/>
-
-                            <NotificationBadge notificationsList={this.state.proposals} icon={<IconOrakwlum />} tooltip="Propostes" textColor="black" badgeColor={yellow500}/>
+                                    <NotificationBadge notificationsList={this.state.proposals} icon={<IconOrakwlum />} tooltip="Propostes" textColor="black" badgeColor={yellow500}/>
 
 
-                            <FlatButton label="" disabled={true} />
+                                    <FlatButton label="" disabled={true} />
 
-                            <IconMenu
-                              iconButtonElement={<IconButton><IconSettings /></IconButton>}
-                              onChange={this.handleChangeMultiple}
-                            >
-                              <MenuItem value="1" primaryText="Perfil" />
-                              <MenuItem value="2" primaryText="Administració" />
-                              <MenuItem value="3" primaryText="Sortir" />
-                            </IconMenu>
-
-                      </div>
-                      }
-                        >
-                        </AppBar>
-
+                                    <IconMenu
+                                      iconButtonElement={<IconButton><IconSettings /></IconButton>}
+                                      onChange={this.handleChangeMultiple}
+                                    >
+                                      <MenuItem value="1" primaryText="Perfil" />
+                                      <MenuItem value="2" primaryText="Administració" />
+                                      <MenuItem value="3" primaryText="Sortir" />
+                                    </IconMenu>
+                                </div>
+                            }
+                        />
                     </div>
 
 
@@ -242,6 +237,7 @@ class Main extends React.Component {
                             icon={<IconOrakwlum />}
                         />
 
+                        
                         <MenuItem leftIcon={<IconDashboard />} rightIcon={<IconNext />} >Dashboard</MenuItem>
 
                         <Divider />
@@ -263,8 +259,6 @@ class Main extends React.Component {
 
 
                     <div style={styles.container}>
-
-
                         <Dialog
                             open={this.state.open}
                             title="Escenaris disponibles"
@@ -275,7 +269,6 @@ class Main extends React.Component {
                         </Dialog>
 
 
-
                         <h1>Dashboard</h1>
                         <h2>Contingut</h2>
                         <RaisedButton
@@ -283,7 +276,6 @@ class Main extends React.Component {
                             primary={true}
                             onTouchTap={this.handleTouchTap}
                         />
-
 
                     </div>
                 </div>
