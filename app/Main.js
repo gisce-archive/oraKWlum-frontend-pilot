@@ -49,6 +49,7 @@ import ContentFilter from 'material-ui/svg-icons/content/filter-list';
 
 //Widgets
 import NotificationBadge from 'material-ui/Widgets/NotificationBadge';
+import UserPanel from 'material-ui/Widgets/UserPanel';
 
 //Icons
 import ContentCopy from 'material-ui/svg-icons/content/content-copy';
@@ -218,6 +219,8 @@ class Main extends React.Component {
 
                                     <NotificationBadge notificationsList={this.state.proposals} icon={<IconOrakwlum />} tooltip="Propostes" textColor="black" badgeColor={yellow500}/>
 
+                                    <UserPanel notificationsList={this.state.proposals} icon={<IconOrakwlum />} tooltip="Propostes" textColor="black" badgeColor={yellow500}/>
+
                                     <IconButton/>
 
                                     <IconMenu
@@ -226,7 +229,6 @@ class Main extends React.Component {
                                         anchorOrigin = {{horizontal: 'left', vertical: 'bottom'}}
                                         targetOrigin = {{horizontal: 'left', vertical: 'top'}}
                                     >
-
                                         <MenuItem value="1" primaryText="Perfil" />
                                         <MenuItem value="2" primaryText="Administració" />
                                         <MenuItem value="3" primaryText="Sortir" />
