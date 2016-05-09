@@ -39,6 +39,17 @@ import PopoverAnimationFromTop from 'material-ui/Popover/PopoverAnimationVertica
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Badge from 'material-ui/Badge';
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import Avatar from 'material-ui/Avatar';
+import {
+  Step,
+  Stepper,
+  StepLabel,
+} from 'material-ui/Stepper';
+import Snackbar from 'material-ui/Snackbar';
+
+
 
 //Header
 import AppBar from 'material-ui/AppBar';
@@ -46,6 +57,17 @@ import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import ContentFilter from 'material-ui/svg-icons/content/filter-list';
+
+//Forms
+import DatePicker from 'material-ui/DatePicker';
+import TimePicker from 'material-ui/TimePicker';
+
+//Locales
+import areIntlLocalesSupported from 'intl-locales-supported';
+var localesMyAppSupports = [
+    "ca"
+];
+
 
 //Widgets
 import NotificationBadge from 'material-ui/Widgets/NotificationBadge';
@@ -63,6 +85,8 @@ import IconNext from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import IconNotification from 'material-ui/svg-icons/social/notifications';
 import IconMessage from 'material-ui/svg-icons/communication/email';
 import IconSettings from 'material-ui/svg-icons/action/settings';
+
+import IconTime from 'material-ui/svg-icons/device/access-time';
 
 import IconUpload from 'material-ui/svg-icons/file/file-upload';
 import IconDownload from 'material-ui/svg-icons/file/file-download';
@@ -83,7 +107,29 @@ const styles = {
     container: {
         textAlign: 'center',
         paddingTop: 200,
+        margin: 50,
     },
+
+    icon: {
+        marginRight: 24,
+    },
+
+    paper: {
+        margin: 20,
+        textAlign: 'center',
+        display: 'inline-block',
+    },
+
+    card: {
+        textAlign: 'left',
+        display: 'inline-block',
+        width: 800,
+
+    },
+
+    centered: {
+        textAlign: 'center',
+    }
 };
 
 const muiTheme = getMuiTheme({
@@ -97,6 +143,38 @@ const muiTheme = getMuiTheme({
 //        accent1Color: deepOrange500,
 
 
+let DateTimeFormat;
+
+// /*
+
+//Set the Locale
+if (areIntlLocalesSupported(['ca-ES'])) {
+  DateTimeFormat = global.Intl.DateTimeFormat;
+} else {
+    const IntlPolyfill = require('intl');
+      DateTimeFormat = IntlPolyfill.DateTimeFormat;
+      require('intl/locale-data/jsonp/ca-ES');
+}
+
+// */
+
+/*
+if (global.Intl) {
+    // Determine if the built-in `Intl` has the locale data we need.
+    if (!areIntlLocalesSupported(localesMyAppSupports)) {
+        // `Intl` exists, but it doesn't have the data we need, so load the
+        // polyfill and patch the constructors we need with the polyfill's.
+        var IntlPolyfill    = require('intl');
+        Intl.NumberFormat   = IntlPolyfill.NumberFormat;
+        Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
+    }
+} else {
+    // No `Intl`, so use and load the polyfill.
+    global.Intl = require('intl');
+}
+
+*/
+
 class Main extends React.Component {
     constructor(props, context) {
         super(props, context);
@@ -106,6 +184,16 @@ class Main extends React.Component {
 
         this.handleNotifTouch = this.handleNotifTouch.bind(this);
         this.handleNotifClose = this.handleNotifClose.bind(this);
+
+        this.handleChangeDateStart = this.handleChangeDateStart.bind(this);
+        this.handleChangeDateEnd = this.handleChangeDateEnd.bind(this);
+
+        this.handleNext = this.handleNext.bind(this);
+        this.handlePrev = this.handlePrev.bind(this);
+
+        this.handleProposalCreation = this.handleProposalCreation.bind(this);
+        this.handleRequestClose = this.handleRequestClose.bind(this);
+
 
         var messages = [{
             displayName: 'Equip directiu',
@@ -155,6 +243,21 @@ class Main extends React.Component {
             messages: messages,
             notifications: notifications,
             proposals: proposals,
+
+            dateStart: null,
+            dateEnd: null,
+
+            finished: false,
+            stepIndex: 0,
+
+
+            snack: {
+                autoHideDuration: 4000,
+                message: 'Event added to your calendar',
+                open: false,
+            }
+
+
         };
     }
 
@@ -189,6 +292,140 @@ class Main extends React.Component {
         });
     }
 
+
+    handleChangeDateStart (event, date) {
+        alert(date);
+        this.setState({
+            dateStart: date,
+        });
+    }
+
+    handleChangeDateEnd (event, date) {
+        this.setState({
+            dateEnd: date
+        });
+    }
+
+
+    handleNext () {
+        const {stepIndex, finished} = this.state;
+        console.log("fini", {stepIndex}, "step",{stepIndex} >=2);
+
+        this.setState({
+          stepIndex: stepIndex + 1,
+          finished: stepIndex >= 2,
+        });
+
+        console.log(this.state.stepIndex);
+
+
+    }
+
+    handlePrev() {
+        const {stepIndex} = this.state;
+        this.setState({
+                stepIndex: stepIndex - 1
+        });
+
+    }
+
+
+
+
+
+    getStepContent(stepIndex) {
+        switch (stepIndex) {
+          case 0:
+            return (<div>
+                    <p>Esculli el rang de dates pels quals crear la nova proposta: </p>
+
+                        <Paper style={styles.paper} zDepth={2} rounded={false}>
+                            <Toolbar>
+                                <ToolbarTitle text="Data inici" />
+
+                                <ToolbarGroup>
+                                    <DatePicker
+                                        hintText="Dia"
+                                        DateTimeFormat={DateTimeFormat}
+                                        okLabel="OK"
+                                        cancelLabel="Cancel·lar"
+                                        locale="ca"
+                                        autoOk={true}
+                                        value={this.state.dateStart}
+                                        onChange={this.handleChangeDateStart}
+                                    />
+                                </ToolbarGroup>
+
+                                <ToolbarGroup>
+                                    <TimePicker
+                                        hintText="Hora"
+                                        okLabel="OK"
+                                        cancelLabel="Cancel·lar"
+                                    />
+                                </ToolbarGroup>
+                            </Toolbar>
+                        </Paper>
+
+                        <Paper style={styles.paper} zDepth={2} rounded={false}>
+                            <Toolbar>
+                                <ToolbarTitle text="Data final" />
+
+                                <DatePicker
+                                    hintText="Dia final"
+                                    DateTimeFormat={DateTimeFormat}
+                                    okLabel="OK"
+                                    cancelLabel="Cancel·lar"
+                                    locale="ca"
+                                    autoOk={true}
+                                    mode="landscape"
+                                    value={this.state.dateEnd}
+                                    onChange={this.handleChangeDateEnd}
+                                />
+
+                                <TimePicker
+                                    hintText="Hora"
+                                    okLabel="OK"
+                                    cancelLabel="Cancel·lar"
+                                />
+                            </Toolbar>
+                        </Paper>
+                </div>
+            );
+          case 1:
+            return (
+               <p>Sel·leccioni els escenaris que vol tenir en compte: </p>
+
+
+
+
+            );
+
+          case 2:
+            return (
+                <p>Confirmi les dades sel·leccionades:</p>
+            );
+          default:
+            return 'You\'re a long way from home sonny jim!';
+        }
+    }
+
+    handleRequestClose () {
+        this.setState({
+            snack: {
+                open: false,
+            }
+        });
+    };
+
+    handleProposalCreation() {
+        console.dir(this.state.snack);
+        this.setState({
+            snack: {
+                open: true,
+            }
+        });
+    };
+
     render() {
         const standardActions = (
             <FlatButton
@@ -198,18 +435,16 @@ class Main extends React.Component {
             />
         );
 
-        const iconStyles = {
-            marginRight: 24,
-        };
+        const {finished, stepIndex} = this.state;
 
-
+        const contentStyle = {margin: '0 16px'};
 
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
                 <div>
                     <div>
                         <AppBar
-                            title="oKW :: Dashboard"
+                            title="oKW :: Propostes"
                             onLeftIconButtonTouchTap={this.handleDrawerToggle}
                             iconElementRight={
                                 <div>
@@ -238,6 +473,13 @@ class Main extends React.Component {
                         />
                     </div>
 
+                    <Snackbar
+                      open={this.state.snack.open}
+                      message="Sol·licitud de creació de nova proposta enviada correctament!"
+                      action=""
+                      autoHideDuration={this.state.snack.autoHideDuration}
+                      onRequestClose={this.handleRequestClose}
+                    />
 
                     <Drawer
                         open={this.state.drawerOpen}
@@ -289,16 +531,161 @@ class Main extends React.Component {
                             onRequestClose={this.handleRequestClose}
                         >
                             Projecció original
+
                         </Dialog>
 
 
-                        <h1>Dashboard</h1>
-                        <h2>Contingut</h2>
-                        <RaisedButton
-                            label="Seleccionar escenaris"
-                            primary={true}
-                            onTouchTap={this.handleTouchTap}
-                        />
+                        <h1>Propostes</h1>
+                        <h2>Crear nova proposta</h2>
+
+                          <div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
+                            <Stepper activeStep={stepIndex}>
+                              <Step>
+                                <StepLabel>Sel·leccioni els dies</StepLabel>
+                              </Step>
+
+                              <Step>
+                                <StepLabel>Esculli quins escenaris </StepLabel>
+                              </Step>
+
+                              <Step>
+                                <StepLabel>Crei la proposta! </StepLabel>
+                              </Step>
+                            </Stepper>
+                            <div style={contentStyle}>
+                              {finished ? (
+                                <p>
+                                  <a
+                                    href="#"
+                                    onClick={(event) => {
+                                      event.preventDefault();
+                                      this.setState({stepIndex: 0, finished: false});
+                                    }}
+                                  >
+                                    Crear nova proposta
+                                  </a> .
+                                </p>
+                              ) : (
+                                <div>
+                                  {this.getStepContent(stepIndex)}
+
+                                  <div style={{marginTop: 12}}>
+                                    <FlatButton
+                                      label="Enrere"
+                                      disabled={stepIndex === 0}
+                                      onTouchTap={this.handlePrev}
+                                      style={{marginRight: 12}}
+                                    />
+                                    <RaisedButton
+                                      label={stepIndex === 2 ? 'Crear proposta' : 'Següent pas'}
+                                      primary={true}
+                                      onTouchTap={stepIndex === 2 ? this.handleProposalCreation : this.handleNext}
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+
+
+
+
+                        <Card style={styles.card}>
+                            <CardHeader
+                                title="Període"
+                                subtitle=""
+                                actAsExpander={true}
+                                showExpandableButton={true}
+                                avatar={<Avatar icon={<IconTime />} />}
+                            />
+
+                            <CardText expandable={true}  style={styles.centered} >
+
+                                <Paper style={styles.paper} zDepth={2} rounded={false}>
+                                    <Toolbar>
+                                        <ToolbarTitle text="Inici" />
+
+                                        <ToolbarGroup>
+                                            <DatePicker
+                                                hintText="Dia"
+                                                DateTimeFormat={DateTimeFormat}
+                                                okLabel="OK"
+                                                cancelLabel="Cancel·lar"
+                                                locale="ca"
+                                                autoOk={true}
+                                                value={this.state.dateStart}
+                                                onChange={this.handleChangeDateStart}
+                                            />
+                                        </ToolbarGroup>
+
+                                        <ToolbarGroup>
+                                            <TimePicker
+                                                hintText="Hora"
+                                                okLabel="OK"
+                                                cancelLabel="Cancel·lar"
+                                            />
+                                        </ToolbarGroup>
+                                    </Toolbar>
+                                </Paper>
+
+
+
+                                <Paper style={styles.paper} zDepth={2} rounded={false}>
+                                    <Toolbar>
+                                        <ToolbarTitle text="Final" />
+
+                                        <DatePicker
+                                            hintText="Dia final"
+                                            DateTimeFormat={DateTimeFormat}
+                                            okLabel="OK"
+                                            cancelLabel="Cancel·lar"
+                                            locale="ca"
+                                            autoOk={true}
+                                            mode="landscape"
+                                            value={this.state.dateEnd}
+                                            onChange={this.handleChangeDateEnd}
+                                        />
+
+                                        <TimePicker
+                                            hintText="Hora"
+                                            okLabel="OK"
+                                            cancelLabel="Cancel·lar"
+                                        />
+                                    </Toolbar>
+                                </Paper>
+
+
+                            </CardText>
+
+                        </Card>
+
+
+                        <Card style={styles.card}>
+                            <CardHeader
+                                title="Escenaris"
+                                subtitle=""
+                                actAsExpander={true}
+                                showExpandableButton={true}
+
+                                avatar={<Avatar icon={<IconSettings />} />}
+
+                            />
+                            <CardText expandable={true} style={styles.centered}>
+
+                            </CardText>
+                            <CardActions expandable={true}>
+                                <RaisedButton
+                                    label="Seleccionar escenaris"
+                                    primary={true}
+                                    onTouchTap={this.handleTouchTap}
+                                />
+                            </CardActions>
+                        </Card>
+
+                        <div>
+
+                        </div>
 
                     </div>
                 </div>
