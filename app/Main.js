@@ -28,7 +28,6 @@ import FlatButton from 'material-ui/FlatButton';
 //Navigation
 import Drawer from 'material-ui/Drawer';
 import Divider from 'material-ui/Divider';
-import ListItem from 'material-ui/List/ListItem';
 import FontIcon from 'material-ui/FontIcon';
 
 //Base
@@ -48,8 +47,10 @@ import {
   StepLabel,
 } from 'material-ui/Stepper';
 import Snackbar from 'material-ui/Snackbar';
-
-
+import TextField from 'material-ui/TextField';
+import Toggle from 'material-ui/Toggle';
+import Subheader from 'material-ui/Subheader';
+import {List, ListItem} from 'material-ui/List';
 
 //Header
 import AppBar from 'material-ui/AppBar';
@@ -61,12 +62,16 @@ import ContentFilter from 'material-ui/svg-icons/content/filter-list';
 //Forms
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
+import Checkbox from 'material-ui/Checkbox';
 
 //Locales
 import areIntlLocalesSupported from 'intl-locales-supported';
 var localesMyAppSupports = [
     "ca"
 ];
+
+//Buttons
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 
 
 //Widgets
@@ -85,8 +90,8 @@ import IconNext from 'material-ui/svg-icons/hardware/keyboard-arrow-right';
 import IconNotification from 'material-ui/svg-icons/social/notifications';
 import IconMessage from 'material-ui/svg-icons/communication/email';
 import IconSettings from 'material-ui/svg-icons/action/settings';
-
 import IconTime from 'material-ui/svg-icons/device/access-time';
+import IconAdd from 'material-ui/svg-icons/content/add';
 
 import IconUpload from 'material-ui/svg-icons/file/file-upload';
 import IconDownload from 'material-ui/svg-icons/file/file-download';
@@ -106,7 +111,6 @@ import IconCollapse from 'material-ui/svg-icons/navigation/expand-less';
 const styles = {
     container: {
         textAlign: 'center',
-        paddingTop: 200,
         margin: 50,
     },
 
@@ -124,12 +128,33 @@ const styles = {
         textAlign: 'left',
         display: 'inline-block',
         width: 800,
-
     },
 
     centered: {
         textAlign: 'center',
+    },
+
+    toggle: {
+        paddingTop: 16,
+        paddingBottom: 16,
+    },
+
+    boxSmall: {
+        maxWidth: 350,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+
+        textAlign: 'left',
+    },
+
+    contentContainer: {
+        width: '100%',
+        maxWidth: 800,
+        textAlign: 'center',
+        marginLeft: 'auto',
+        marginRight : 'auto',
     }
+
 };
 
 const muiTheme = getMuiTheme({
@@ -194,6 +219,11 @@ class Main extends React.Component {
         this.handleProposalCreation = this.handleProposalCreation.bind(this);
         this.handleRequestClose = this.handleRequestClose.bind(this);
 
+        this.getSummary = this.getSummary.bind(this);
+
+        this.getStepTitle = this.getStepTitle.bind(this);
+        this.getStepSubtitle = this.getStepSubtitle.bind(this);
+        this.getStepIcon = this.getStepIcon.bind(this);
 
         var messages = [{
             displayName: 'Equip directiu',
@@ -255,9 +285,29 @@ class Main extends React.Component {
                 autoHideDuration: 4000,
                 message: 'Event added to your calendar',
                 open: false,
-            }
+            },
 
 
+            steps: {
+                "0": {
+                    title: "Rang de dates",
+                    subtitle: "Esculli el rang de dates pels quals crear la nova proposta",
+                    icon: <IconTime />,
+                },
+
+                "1": {
+                    title: "Escenaris de càlcul",
+                    subtitle: "Defineixi quins escenaris cal contemplar",
+                    icon: <IconSettings />
+                },
+
+                "2": {
+                    title: "Processat de la proposta",
+                    subtitle: "Confirmi les dades sel·leccionades i doni-li nom a la proposta",
+                    icon: <IconOrakwlum />
+                },
+
+            },
         };
     }
 
@@ -294,7 +344,10 @@ class Main extends React.Component {
 
 
     handleChangeDateStart (event, date) {
-        alert(date);
+
+        var date_ = new Date(date);
+
+
         this.setState({
             dateStart: date,
         });
@@ -308,16 +361,12 @@ class Main extends React.Component {
 
 
     handleNext () {
-        const {stepIndex, finished} = this.state;
-        console.log("fini", {stepIndex}, "step",{stepIndex} >=2);
+        const {stepIndex} = this.state;
 
         this.setState({
           stepIndex: stepIndex + 1,
           finished: stepIndex >= 2,
         });
-
-        console.log(this.state.stepIndex);
-
 
     }
 
@@ -329,83 +378,265 @@ class Main extends React.Component {
 
     }
 
+    getSummary(component) {
+        var date_ =  new Date(this.state[component]);
 
+        return ("0"+date_.getDate()).slice(-2) + "/" + ("0"+date_.getMonth()).slice(-2)  + "/" + date_.getFullYear() + " " + ("0"+date_.getHours()).slice(-2) + ":" + ("0"+date_.getMinutes()).slice(-2) ;
+    }
 
+    getStepTitle(stepIndex) {
+        return this.state.steps[stepIndex].title;
+    }
 
+    getStepSubtitle(stepIndex) {
+        return this.state.steps[stepIndex].subtitle;
+    }
+
+    getStepIcon(stepIndex) {
+        return this.state.steps[stepIndex].icon;
+    }
 
     getStepContent(stepIndex) {
         switch (stepIndex) {
-          case 0:
-            return (<div>
-                    <p>Esculli el rang de dates pels quals crear la nova proposta: </p>
+              default:
+              case 0:
+                    return (
+                        <div>
+                            <Paper style={styles.paper} zDepth={2} rounded={false}>
+                                <Toolbar>
+                                    <ToolbarTitle text="Inici" />
 
-                        <Paper style={styles.paper} zDepth={2} rounded={false}>
-                            <Toolbar>
-                                <ToolbarTitle text="Data inici" />
+                                    <ToolbarGroup>
+                                        <DatePicker
+                                            hintText="Dia"
+                                            underlineShow={true}
+                                            DateTimeFormat={DateTimeFormat}
+                                            okLabel="OK"
+                                            cancelLabel="Cancel·lar"
+                                            locale="ca"
+                                            autoOk={true}
+                                            value={this.state.dateStart}
+                                            onChange={this.handleChangeDateStart}
 
-                                <ToolbarGroup>
+                                        />
+                                    </ToolbarGroup>
+
+                                    <ToolbarGroup>
+                                        <TimePicker
+                                            hintText="Hora"
+                                            okLabel="OK"
+                                            cancelLabel="Cancel·lar"
+                                        />
+                                    </ToolbarGroup>
+                                </Toolbar>
+                            </Paper>
+
+                            <Paper style={styles.paper} zDepth={2} rounded={false}>
+                                <Toolbar>
+                                    <ToolbarTitle text="Final" />
+
                                     <DatePicker
                                         hintText="Dia"
                                         DateTimeFormat={DateTimeFormat}
+                                        underlineShow={true}
+
                                         okLabel="OK"
                                         cancelLabel="Cancel·lar"
                                         locale="ca"
                                         autoOk={true}
-                                        value={this.state.dateStart}
-                                        onChange={this.handleChangeDateStart}
+                                        mode="landscape"
+                                        value={this.state.dateEnd}
+                                        onChange={this.handleChangeDateEnd}
                                     />
-                                </ToolbarGroup>
 
-                                <ToolbarGroup>
                                     <TimePicker
                                         hintText="Hora"
                                         okLabel="OK"
                                         cancelLabel="Cancel·lar"
                                     />
-                                </ToolbarGroup>
-                            </Toolbar>
-                        </Paper>
+                                </Toolbar>
+                            </Paper>
+                        </div>
+                );
+              case 1:
+                    return (
+                    <div>
+                        <Paper style={styles.boxSmall} zDepth={2}>
 
-                        <Paper style={styles.paper} zDepth={2} rounded={false}>
-                            <Toolbar>
-                                <ToolbarTitle text="Data final" />
+                            <List>
+                                <div>
+                                    <Subheader>
+                                        <span>Escenaris de càlcul</span>
+                                        <span style={{ textAlign: 'right' }}>
+                                            <FloatingActionButton  mini={true} style={{ marginLeft: 20 }}>
+                                                <IconAdd />
+                                            </FloatingActionButton>
+                                        </span>
+                                    </Subheader>
 
-                                <DatePicker
-                                    hintText="Dia final"
-                                    DateTimeFormat={DateTimeFormat}
-                                    okLabel="OK"
-                                    cancelLabel="Cancel·lar"
-                                    locale="ca"
-                                    autoOk={true}
-                                    mode="landscape"
-                                    value={this.state.dateEnd}
-                                    onChange={this.handleChangeDateEnd}
+                                </div>
+
+                                <ListItem
+                                  leftCheckbox={<Checkbox />}
+                                  checked={true}
+                                  primaryText="Projecció original"
+                                  secondaryText=""
                                 />
 
-                                <TimePicker
-                                    hintText="Hora"
-                                    okLabel="OK"
-                                    cancelLabel="Cancel·lar"
+                                <ListItem
+                                  leftCheckbox={<Checkbox />}
+                                  checked={true}
+                                  primaryText="Festiu CP 17300"
+                                  secondaryText=""
                                 />
-                            </Toolbar>
+
+
+                                <ListItem
+                                  leftCheckbox={<Checkbox />}
+                                  checked={true}
+                                  primaryText="Baixes previstes"
+                                  secondaryText=""
+                                />
+
+                                <ListItem
+                                  leftCheckbox={<Checkbox />}
+                                  checked={true}
+                                  primaryText="Festiu Indústria"
+                                  secondaryText=""
+                                />
+
+                                <ListItem
+                                  leftCheckbox={<Checkbox />}
+                                  checked={true}
+                                  primaryText="Marge 5%"
+                                  secondaryText=""
+                                />
+
+                                <ListItem
+                                  leftCheckbox={<Checkbox />}
+                                  checked={true}
+                                  primaryText="Marge 15%"
+                                  secondaryText=""
+                                />
+
+
+                                <ListItem
+                                  leftCheckbox={<Checkbox />}
+                                  checked={true}
+                                  primaryText="Marge 25%"
+                                  secondaryText=""
+                                />
+                            </List>
                         </Paper>
-                </div>
-            );
-          case 1:
-            return (
-               <p>Sel·leccioni els escenaris que vol tenir en compte: </p>
+
+
+                    </div>
+
+
+
+
+                );
+
+              case 2:
+                    return (
+                        <div>
+                            <div>
+
+                                <Paper style={styles.boxSmall} zDepth={2}>
+                                    <List>
+
+                                        <ListItem >
+                                            <TextField
+                                              hintText="p.e 31/05/2015"
+                                              floatingLabelText="Nom de la proposta"
+                                              underlineShow={false}
+                                            />
+                                        </ListItem>
+
+
+                                        <ListItem
+                                            primaryText="Proposta pública"
+                                            rightToggle={
+                                                <Toggle/>
+                                            }
+                                        />
+
+                                        <ListItem
+                                            primaryText="Crear nova plantilla"
+                                            rightToggle={
+                                                <Toggle/>
+                                            }
+                                        />
+
+                                    </List>
+                                </Paper>
+                            </div>
+
+                            <br/>
+                            <br/>
+
+                            <div>
+
+                                <Paper style={styles.boxSmall} zDepth={2}>
+                                        <List>
+                                            <Subheader>Rang de dates</Subheader>
+
+                                            <ListItem
+                                                    primaryText={ this.getSummary("dateStart")}
+                                                    secondaryText="Data inici"
+                                            />
+
+
+                                            <ListItem
+                                                    primaryText={ this.getSummary("dateEnd")}
+                                                    secondaryText="Data fi"
+                                            />
+
+                                        </List>
+
+                                            <Divider />
+
+                                        <List>
+                                            <Subheader>Escenaris de càlcul</Subheader>
+
+                                            <ListItem
+                                              leftCheckbox={<Checkbox />}
+                                              checked={true}
+                                              primaryText="Projecció original"
+                                              secondaryText=""
+                                            />
+
+                                            <ListItem
+                                              leftCheckbox={<Checkbox />}
+                                              checked={true}
+                                              primaryText="Baixes previstes"
+                                              secondaryText=""
+                                            />
+
+                                            <ListItem
+                                              leftCheckbox={<Checkbox />}
+                                              checked={true}
+                                              primaryText="Festiu CP 17300"
+                                              secondaryText=""
+                                            />
+
+                                            <ListItem
+                                              leftCheckbox={<Checkbox />}
+                                              checked={true}
+                                              primaryText="Marge 15%"
+                                              secondaryText=""
+                                            />
+                                        </List>
+                                </Paper>
+
+                            </div>
+                        </div>
 
 
 
 
             );
 
-          case 2:
-            return (
-                <p>Confirmi les dades sel·leccionades:</p>
-            );
-          default:
-            return 'You\'re a long way from home sonny jim!';
         }
     }
 
@@ -437,7 +668,7 @@ class Main extends React.Component {
 
         const {finished, stepIndex} = this.state;
 
-        const contentStyle = {margin: '0 16px'};
+        const contentStyle = {margin: '0 0px'};
 
         return (
             <MuiThemeProvider muiTheme={muiTheme}>
@@ -538,7 +769,7 @@ class Main extends React.Component {
                         <h1>Propostes</h1>
                         <h2>Crear nova proposta</h2>
 
-                          <div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
+                          <div style={styles.contentContainer}>
                             <Stepper activeStep={stepIndex}>
                               <Step>
                                 <StepLabel>Sel·leccioni els dies</StepLabel>
@@ -552,6 +783,7 @@ class Main extends React.Component {
                                 <StepLabel>Crei la proposta! </StepLabel>
                               </Step>
                             </Stepper>
+
                             <div style={contentStyle}>
                               {finished ? (
                                 <p>
@@ -566,7 +798,23 @@ class Main extends React.Component {
                                   </a> .
                                 </p>
                               ) : (
-                                <div>
+
+                        <Card style={styles.card}>
+                            <CardHeader
+                                title={this.getStepTitle(stepIndex)}
+                                subtitle={this.getStepSubtitle(stepIndex)}
+                                actAsExpander={false}
+                                showExpandableButton={false}
+                                avatar={<Avatar icon={this.getStepIcon(stepIndex)} />}
+                            />
+
+                            <CardText
+                                expandable={false}
+                            />
+
+
+
+                                <div style={styles.centered}>
                                   {this.getStepContent(stepIndex)}
 
                                   <div style={{marginTop: 12}}>
@@ -583,105 +831,11 @@ class Main extends React.Component {
                                     />
                                   </div>
                                 </div>
+                            </Card>
+
                               )}
                             </div>
                           </div>
-
-
-
-
-
-                        <Card style={styles.card}>
-                            <CardHeader
-                                title="Període"
-                                subtitle=""
-                                actAsExpander={true}
-                                showExpandableButton={true}
-                                avatar={<Avatar icon={<IconTime />} />}
-                            />
-
-                            <CardText expandable={true}  style={styles.centered} >
-
-                                <Paper style={styles.paper} zDepth={2} rounded={false}>
-                                    <Toolbar>
-                                        <ToolbarTitle text="Inici" />
-
-                                        <ToolbarGroup>
-                                            <DatePicker
-                                                hintText="Dia"
-                                                DateTimeFormat={DateTimeFormat}
-                                                okLabel="OK"
-                                                cancelLabel="Cancel·lar"
-                                                locale="ca"
-                                                autoOk={true}
-                                                value={this.state.dateStart}
-                                                onChange={this.handleChangeDateStart}
-                                            />
-                                        </ToolbarGroup>
-
-                                        <ToolbarGroup>
-                                            <TimePicker
-                                                hintText="Hora"
-                                                okLabel="OK"
-                                                cancelLabel="Cancel·lar"
-                                            />
-                                        </ToolbarGroup>
-                                    </Toolbar>
-                                </Paper>
-
-
-
-                                <Paper style={styles.paper} zDepth={2} rounded={false}>
-                                    <Toolbar>
-                                        <ToolbarTitle text="Final" />
-
-                                        <DatePicker
-                                            hintText="Dia final"
-                                            DateTimeFormat={DateTimeFormat}
-                                            okLabel="OK"
-                                            cancelLabel="Cancel·lar"
-                                            locale="ca"
-                                            autoOk={true}
-                                            mode="landscape"
-                                            value={this.state.dateEnd}
-                                            onChange={this.handleChangeDateEnd}
-                                        />
-
-                                        <TimePicker
-                                            hintText="Hora"
-                                            okLabel="OK"
-                                            cancelLabel="Cancel·lar"
-                                        />
-                                    </Toolbar>
-                                </Paper>
-
-
-                            </CardText>
-
-                        </Card>
-
-
-                        <Card style={styles.card}>
-                            <CardHeader
-                                title="Escenaris"
-                                subtitle=""
-                                actAsExpander={true}
-                                showExpandableButton={true}
-
-                                avatar={<Avatar icon={<IconSettings />} />}
-
-                            />
-                            <CardText expandable={true} style={styles.centered}>
-
-                            </CardText>
-                            <CardActions expandable={true}>
-                                <RaisedButton
-                                    label="Seleccionar escenaris"
-                                    primary={true}
-                                    onTouchTap={this.handleTouchTap}
-                                />
-                            </CardActions>
-                        </Card>
 
                         <div>
 
