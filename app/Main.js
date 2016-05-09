@@ -477,44 +477,37 @@ class Main extends React.Component {
                                 </div>
 
                                 <ListItem
-                                  leftCheckbox={<Checkbox />}
-                                  checked={true}
+                                  leftCheckbox={<Checkbox checked={true}/>}
                                   primaryText="Projecció original"
                                   secondaryText=""
                                 />
 
                                 <ListItem
-                                  leftCheckbox={<Checkbox />}
-                                  checked={true}
-                                  primaryText="Festiu CP 17300"
-                                  secondaryText=""
-                                />
-
-
-                                <ListItem
-                                  leftCheckbox={<Checkbox />}
-                                  checked={true}
+                                    leftCheckbox={<Checkbox checked={true}/>}
                                   primaryText="Baixes previstes"
                                   secondaryText=""
                                 />
 
                                 <ListItem
                                   leftCheckbox={<Checkbox />}
-                                  checked={true}
+                                  primaryText="Festiu CP 17300"
+                                  secondaryText=""
+                                />
+
+                                <ListItem
+                                  leftCheckbox={<Checkbox />}
                                   primaryText="Festiu Indústria"
                                   secondaryText=""
                                 />
 
                                 <ListItem
                                   leftCheckbox={<Checkbox />}
-                                  checked={true}
                                   primaryText="Marge 5%"
                                   secondaryText=""
                                 />
 
                                 <ListItem
                                   leftCheckbox={<Checkbox />}
-                                  checked={true}
                                   primaryText="Marge 15%"
                                   secondaryText=""
                                 />
@@ -522,7 +515,6 @@ class Main extends React.Component {
 
                                 <ListItem
                                   leftCheckbox={<Checkbox />}
-                                  checked={true}
                                   primaryText="Marge 25%"
                                   secondaryText=""
                                 />
@@ -600,29 +592,25 @@ class Main extends React.Component {
                                             <Subheader>Escenaris de càlcul</Subheader>
 
                                             <ListItem
-                                              leftCheckbox={<Checkbox />}
-                                              checked={true}
+                                                leftCheckbox={<Checkbox checked={true}/>}
                                               primaryText="Projecció original"
                                               secondaryText=""
                                             />
 
                                             <ListItem
-                                              leftCheckbox={<Checkbox />}
-                                              checked={true}
+                                                leftCheckbox={<Checkbox checked={true}/>}
                                               primaryText="Baixes previstes"
                                               secondaryText=""
                                             />
 
                                             <ListItem
-                                              leftCheckbox={<Checkbox />}
-                                              checked={true}
+                                                leftCheckbox={<Checkbox checked={true}/>}
                                               primaryText="Festiu CP 17300"
                                               secondaryText=""
                                             />
 
                                             <ListItem
-                                              leftCheckbox={<Checkbox />}
-                                              checked={true}
+                                                leftCheckbox={<Checkbox checked={true}/>}
                                               primaryText="Marge 15%"
                                               secondaryText=""
                                             />
@@ -685,10 +673,6 @@ class Main extends React.Component {
 
                                     <NotificationBadge notificationsList={this.state.proposals} icon={<IconOrakwlum />} tooltip="Propostes" textColor="black" badgeColor={yellow500}/>
 
-                                    <UserPanel notificationsList={this.state.proposals} icon={<IconOrakwlum />} tooltip="Propostes" textColor="black" badgeColor={yellow500}/>
-
-                                    <IconButton/>
-
                                     <IconMenu
                                         iconButtonElement={<IconButton><IconSettings /></IconButton>}
                                         onChange={this.handleChangeMultiple}
@@ -699,6 +683,10 @@ class Main extends React.Component {
                                         <MenuItem value="2" primaryText="Administració" />
                                         <MenuItem value="3" primaryText="Sortir" />
                                     </IconMenu>
+
+                                    <UserPanel notificationsList={this.state.proposals} icon={<IconOrakwlum />} tooltip="Propostes" textColor="black" badgeColor={yellow500}/>
+
+
                                 </div>
                             }
                         />
