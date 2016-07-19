@@ -21,7 +21,6 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 
-
 //Buttons
 import FlatButton from 'material-ui/FlatButton';
 
@@ -226,41 +225,57 @@ class Main extends React.Component {
         this.getStepIcon = this.getStepIcon.bind(this);
 
         var messages = [{
-            displayName: 'Equip directiu',
+            from: 'EquipDirectiu',
             displayPicture: 'dist/img/user2-160x160.jpg',
             subject: 'Necessitem les propostes de la propera setmana',
-            messageTime: '5 mins',
+            messageTime: 'Fa 5 minuts',
+            id: '2993828214',
         }, {
-            displayName: 'PowERP',
+            from: 'PowERP',
             displayPicture: 'dist/img/user3-128x128.jpg',
             subject: '[ERP] Proposta 10/05/2015 validada pel responsable!',
-            messageTime: '2 hours',
-        }];
+            messageTime: 'Fa 2 hores',
+            id: '2993828213',
+        }, {
+            from: 'XaviTorelló',
+            displayPicture: 'dist/img/user1-128x128.jpg',
+            subject: 'Nova versió publicada. Consulta les novetats relacionades!',
+            messageTime: 'Ahir',
+            id: '2993828212',
+        }
+        ];
 
         var notifications = [
             {
                 subject: 'Nova proposta 15-05-2015 creada',
-                className: 'fa fa-users text-aqua'
+                className: 'fa fa-users text-aqua',
+                messageTime: 'Fa 3 minuts'
             }, {
                 subject: 'Càrrega d\'F1s finalitzada',
-                className: 'fa fa-warning text-yellow'
+                className: 'fa fa-warning text-yellow',
+                messageTime: 'Fa 45 minuts',
             }, {
                 subject: 'Nova proposta 14-05-2015 creada',
-                className: 'fa fa-users text-red'
+                className: 'fa fa-users text-red',
+                messageTime: 'Ahir'
             },];
 
         var proposals = [{
             subject: 'Revisió de les propostes setmana 16/05',
-            percentage: 85
+            percentage: 85,
+            messageTime: 'Ahir'
         }, {
             subject: 'Preparació previsions setmana 23/05',
-            percentage: 65
+            percentage: 65,
+            messageTime: 'Fa dos dies'
         }, {
             subject: 'Preparació previsions setmana 30/05',
-            percentage: 0
+            percentage: 0,
+            messageTime: 'Fa una setmana'
         }, {
             subject: 'Comparativa proposta comprada vs real setmana 09/05',
-            percentage: 10
+            percentage: 10,
+            messageTime: 'Fa dues setmanes'
         }];
 
         this.state = {
