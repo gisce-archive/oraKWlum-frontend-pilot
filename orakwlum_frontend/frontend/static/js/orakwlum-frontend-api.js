@@ -58,6 +58,7 @@ function get_proposals(setMain, on="execucio", tipus="chart"){
             clear_hist();
 
             $.each(data._items, function (index,value) {
+                console.dir(value);
                 append_hist(value.name, on, metode);
             });
 
@@ -70,7 +71,7 @@ function get_proposals(setMain, on="execucio", tipus="chart"){
             if (setMain) {
 
                 $(parentDiv).empty();
-                last = data._items[0].name;
+                last = data._items[0]._id;
                 //last = $( '#llistat_historic > ul > li:last-child > a').href();
 
 
@@ -108,12 +109,13 @@ function get_selector_listener (type){
 
 function get_constructor(type, div, child, last){
 
-    switch (type){
+    switch ("table"){
         case "chart":
             return create_chart(child, last);
             break;
 
         case "table":
+            console.log("table");
             return create_table(child, last);
             break;
     }
@@ -158,8 +160,15 @@ function create_chart(div, id, type){
         $(div).append("<svg class='nvd3-svg'></svg>");
     }
 
+    console.log(id);
+
     $.ajax({
-        url: 'http://127.0.0.1:5000/proposals/' + id,
+
+        url: 'https://api.orakwlum.local/proposals/' + id,
+        method: 'GET',
+        headers: {
+            'authorization': $auth
+        },
         dataType: 'json',
 
         success: function (data, status, jqXHR) {
@@ -167,7 +176,7 @@ function create_chart(div, id, type){
             switch(type) {
                 default:
                 case 'area':
-                    create_chart_multiarea (data.name, data.scenarios, div);
+                    create_chart_multiarea (data.name, data.data, div);
                     break;
                 case 'line':
                     create_chart_multiline (data.name, data.scenarios, div);
@@ -193,11 +202,15 @@ function create_chart(div, id, type){
 //Create new proposal table
 function create_table(div, id, type){
     $.ajax({
-        url: 'http://127.0.0.1:5000/proposals/' + id,
+        url: 'https://api.orakwlum.local/proposals/' + id,
+        method: 'GET',
+        headers: {
+            'authorization': $auth
+        },
         dataType: 'json',
 
         success: function (data, status, jqXHR) {
-            create_table_odded (data.name, data.scenarios, div, type);
+            create_table_odded (data.name, data.data, div, type);
         },
 
         error: function (jqXHR, status) {
