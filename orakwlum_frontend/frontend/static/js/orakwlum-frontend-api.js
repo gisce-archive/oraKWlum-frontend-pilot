@@ -59,7 +59,7 @@ function get_proposals(setMain, on="execucio", tipus="chart"){
 
             $.each(data._items, function (index,value) {
                 console.dir(value);
-                append_hist(value.name, on, metode);
+                append_hist(value.name,  on, metode);
             });
 
             maxPage = (Math.round(data._meta.total/max_elements));
@@ -109,7 +109,8 @@ function get_selector_listener (type){
 
 function get_constructor(type, div, child, last){
 
-    switch ("table"){
+    type = "table";
+    switch (type){
         case "chart":
             return create_chart(child, last);
             break;
@@ -258,6 +259,10 @@ function test_proposals(){
         },
 
         error: function (request, status, error) {
+
+            console.log("setting new token");
+            get_bearer();
+
             console.dir(request);
             $('body').append("There was an error during the authentication " + request.status);
             return false;
