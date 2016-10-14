@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'XaviTorello'
 
-from frontend import *
+from .frontend import *
 
 import threading
 
@@ -22,11 +22,11 @@ class Frontend(object):
 
     def __init__(self, port=8000, host="0.0.0.0"):
         self.app = Flask(__name__)
+        self.PORT = port
+        self.HOST = host
         self.thread = threading.Thread(target=self.start, args=())
         self.thread.daemon = True
         self.thread.start()
-        self.PORT = port
-        self.HOST = host
 
 
     def __del__(self):
@@ -34,7 +34,6 @@ class Frontend(object):
 
     def start(self):
         try:
-
             ## INDEX
             @self.app.route('/')
             def index():
@@ -105,8 +104,6 @@ class Frontend(object):
             def pagina_no_trobada(error):
                 return render_template('page_not_found.html'), 500
 
-
-
             #print " * xFrontend running on http://127.0.0.1:{}".format(self.PORT)
             self.app.run(port=self.PORT, host=self.HOST)
 
@@ -116,4 +113,4 @@ class Frontend(object):
             self.shutdown()
 
     def shutdown(self):
-        print "Shutting down web server"
+        print ("Shutting down web server")
