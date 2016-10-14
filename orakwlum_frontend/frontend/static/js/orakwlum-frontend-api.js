@@ -37,10 +37,15 @@ function get_proposals(setMain, on="execucio", tipus="chart"){
         setMain = false;
 
     $.ajax({
-        url: 'http://127.0.0.1:5000/proposals?sort=-_id&max_results='+ max_elements + '&page='+ currentPage,
+        url: 'https://api.orakwlum.local/proposals?sort=-_id&max_results='+ max_elements + '&page='+ currentPage,
         dataType: 'json',
-
+        method: 'GET',
+        headers: {
+            'authorization': $auth
+        },
         success: function (data, status, jqXHR) {
+            console.dir(data);
+            $('body').append("Reached proposals " + data._items[0].CUPS);
 
             proposals = [];
             parentDiv='#execucio_ultima';
@@ -70,6 +75,7 @@ function get_proposals(setMain, on="execucio", tipus="chart"){
 
 
                 append_element(parentDiv, last, tipus);
+                console.log("entro");
             }
         },
 
@@ -124,6 +130,7 @@ function append_element(parentDiv, last, tipuss){
 
     //For each tipus append element
     for (i=0 ; i < tipuss.length; i++){
+        console.log("entro");
 
         tipus=tipuss[i];
 
@@ -195,6 +202,52 @@ function create_table(div, id, type){
 
         error: function (jqXHR, status) {
             $(div).append("KO!!!");
+        }
+    });
+}
+
+
+//Create new proposal table
+function get_bearer(){
+    $.ajax({
+        url: 'https://api.orakwlum.local/oauth/token',
+        dataType: 'json',
+        method: 'POST',
+        data: { grant_type:'password', username: 'k', password: 'k', client_id: 'EOuV7QKGnn9eq2jscZqO6sKW5oMjR4MOkH8kdRpB' },
+
+        success: function (data, status, jqXHR) {
+            $('body').append("Reached token " + data['access_token'] + "<br/>");
+            $token = data['access_token'];
+            $.cookie('token', data['access_token'] , { expires: 1, path: '/' });
+            $.cookie('user', 'k', { expires: 1, path: '/' });
+        },
+
+        error: function (jqXHR, status) {
+            console.dir(jqXHR);
+            $('body').append("There was an error during the authentication");
+        }
+    });
+}
+
+
+function test_proposals(){
+    var auth = 'Bearer ' + $token;
+
+    $.ajax({
+        url: 'https://api.orakwlum.local/proposals',
+        method: 'GET',
+        headers: {
+            'authorization': auth
+        },
+        success: function (data, status, jqXHR) {
+            console.dir(data);
+            $('body').append("Reached proposals " + data._items[0]['CUPS']);
+        },
+
+        error: function (request, status, error) {
+            console.dir(request);
+            $('body').append("There was an error during the authentication " + request.status);
+            return false;
         }
     });
 }
