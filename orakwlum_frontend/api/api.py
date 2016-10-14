@@ -6,7 +6,7 @@ from eve import Eve
 import threading
 
 # Loads API settings
-from settings import *
+from .settings import *
 
 
 class Api(object):
