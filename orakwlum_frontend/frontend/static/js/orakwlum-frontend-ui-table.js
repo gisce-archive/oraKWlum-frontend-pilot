@@ -25,37 +25,38 @@ function create_table_odded (nom, scenarios, div, type) {
     table = '<div class="box-header"><h3 class="box-title">' + nom + '</h3></div>' +
         '<div class="box-body no-padding">';
 
-    num_scenarios = scenarios.length
+    num_scenarios = scenarios.prediction.length
 
     mida_per_td = (num_scenarios+1) / 100
 
-    if (! scenarios.length>0)
+    if (! scenarios.prediction.length>0)
         return;
 
-    num_hores = scenarios[num_scenarios-1].prediction.length;
-
+    num_hores = scenarios.prediction[0].consumption.length;
     max_value = 0;
 
     // Set table header and reach the max value
     table = '<tr><th style="width: 100px">Hora</th>';
 
     for (i=0; i< num_scenarios; i++) {
-        table += '<th>' + scenarios[i].name + '</th>';
+        table += '<th>' + scenarios.prediction[i].day + '</th>';
     }
+    console.log("LOL");
 
     // Prepare table content and set max values
     for (hora = 0; hora < num_hores; hora++) {
-        horaa = new Date(scenarios[0].prediction[hora]._id);
-        tr = '<tr><td>' + getFormatedTime(horaa); + '</td>';
-        $.each(scenarios, function (idxScenario, scenario) {
+        //horaa = new Date(scenarios.prediction[0].);
+        horaa = hora;
+        tr = '<tr><td>' + (horaa); + '</td>';
+        $.each(scenarios.prediction, function (idxScenario, scenario) {
 
-            prediction = scenario.prediction[hora];
+            prediction = scenario.consumption[hora];
 
             //console.log(hora + scenario.name + " " + prediction.sum_consumption_proposal);
 
-            tr += '<td class="consumption" color="' + idxScenario + '" value=" ' + prediction.sum_consumption_proposal + '">' + prediction.sum_consumption_proposal + '</td>';
+            tr += '<td class="consumption" color="' + idxScenario + '" value=" ' + prediction + '">' + prediction + '</td>';
 
-            max_value = Math.max(max_value, prediction.sum_consumption_proposal);
+            max_value = Math.max(max_value, prediction);
 
         });
         table += tr + '</tr>';
