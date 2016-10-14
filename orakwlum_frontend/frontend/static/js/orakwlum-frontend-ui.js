@@ -15,6 +15,7 @@ $.urlParam = function(name){
     }
 }
 
+
 var max_elements = 8;
 var currentPage = $.urlParam("page");
 var maxPage = currentPage;
@@ -42,6 +43,7 @@ function append_hist(name, on="execucio", metode="append_chart") {
 
 //From a string like "160401_160402" convert it to a Chart Title
 function convert_date_to_title (string, lite) {
+    return string;
     //Lite week days (abreviated version)
     days_week = (lite)?days_in_week_lite:days_in_week;
 
