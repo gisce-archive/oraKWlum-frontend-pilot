@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = 'XaviTorello'
 
-from frontend import *
+from .frontend import *
 
 ## SimpleHTTP imports (
 import SimpleHTTPServer
