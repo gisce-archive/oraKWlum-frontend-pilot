@@ -15,7 +15,6 @@ class Frontend(object):
 
     app = Flask(__name__)
 
-
     #Handler.extensions_map.update({
     #    '.json': 'application/x-web-app-manifest+json',
     #});
@@ -39,6 +38,13 @@ class Frontend(object):
             @self.app.route('/')
             def index():
                 return dashboard()
+
+
+
+            ## REACT
+            @self.app.route('/react/')
+            def react():
+                return render_template('layout_react.html')
 
 
             ## DASHBOARD
