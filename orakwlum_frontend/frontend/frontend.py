@@ -11,7 +11,7 @@ from flask import Flask, render_template, request
 
 
 class Frontend(object):
-    PORT = 8000
+    PORT = 80
 
     app = Flask(__name__)
 
@@ -37,7 +37,8 @@ class Frontend(object):
             ## INDEX
             @self.app.route('/')
             def index():
-                return dashboard()
+                return proposta_ultim()
+                #return dashboard()
 
 
 

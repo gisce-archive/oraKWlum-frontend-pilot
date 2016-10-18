@@ -14,7 +14,8 @@ function getFormatedTime(datee){
 }
 
 //Return an HTML progress bar
-function getProgressBar(amount, color=0) {
+//function getProgressBar(amount, color=0) {
+function getProgressBar(amount, color) {
     return '<div class="progress progress-xs">' +
               '<div class="progress-bar progress-bar-'+ colors[color%colors.length] + '" style="width: '+  amount + '%"></div>' +
             '</div>';
@@ -104,7 +105,8 @@ function reset_table(div, id, type){
 
 }
 
-function change_table_type(div, id, type, max_value=null) {
+//function change_table_type(div, id, type, max_value=null) {
+function change_table_type(div, id, type, max_value) {
 
     //set the table container on the filter expression
     div += " table";

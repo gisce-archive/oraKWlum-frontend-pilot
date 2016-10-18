@@ -31,14 +31,18 @@
     <script src="{{ url_for('static', filename='js/orakwlum-frontend-api.js') }}"></script>
     <link href="{{ url_for('static', filename='css/orakwlum-frontend.css') }}" rel="stylesheet">
 
+    <link href="{{ url_for('static', filename='css/ribbon.css') }}" rel="stylesheet">
+
 </head>
 
 <body class="hold-transition skin-red sidebar-mini sidebar-collapse">
-<div class="wrapper">
+<div class="wrapper ">
+   <div class="ribbon"><span>DEMO PARCIAL</span></div>
   <aside class="main-sidebar" >
     <section class="sidebar">
       <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
+<!--
         <li class="treeview">
           <a href="#">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
@@ -47,6 +51,7 @@
               <li><a href="{{ url_for('dashboard') }}"><i class="fa fa-circle-o"></i> Històric de propostes</a></li>
           </ul>
         </li>
+-->
 
         <li class="treeview">
           <a href="#">
@@ -56,8 +61,10 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ url_for('proposta_ultim') }}"><i class="fa fa-circle-o"></i> Última proposta</a></li>
+<!--
             <li><a href="{{ url_for('proposta_setmana') }}"><i class="fa fa-circle-o"></i> Aquesta setmana</a></li>
             <li><a href="{{ url_for('proposta_setmana_pasada') }}"><i class="fa fa-circle-o"></i> La setmana passada</a></li>
+-->
           </ul>
         </li>
 
@@ -80,9 +87,11 @@
             <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
+<!--
             <li><a href="{{ url_for('taula_ultima') }}"><i class="fa fa-circle-o"></i> Última proposta</a></li>
-            <li><a href="{{ url_for('taula_setmana') }}"><i class="fa fa-circle-o"></i> Aquesta setmana</a></li>
             <li><a href="{{ url_for('taula_setmana_pasada') }}"><i class="fa fa-circle-o"></i> La setmana passada</a></li>
+-->
+            <li><a href="{{ url_for('taula_setmana') }}"><i class="fa fa-circle-o"></i> Aquesta setmana</a></li>
           </ul>
         </li>
 

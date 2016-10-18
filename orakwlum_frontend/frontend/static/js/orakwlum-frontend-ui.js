@@ -15,7 +15,7 @@ $.urlParam = function(name){
     }
 }
 
-var max_elements = 8;
+var max_elements = 6;
 var currentPage = $.urlParam("page");
 var maxPage = currentPage;
 
@@ -26,14 +26,18 @@ var days_in_week = ["Diumenge", "Dilluns", "Dimarts", "Dimecres", "Dijous", "Div
 var days_in_week_lite = ["Dg", "Dl", "Dm", "Dx", "Dj", "Dv", "Ds"];
 
 
-
 //Clean right history Proposals menu
 function clear_hist() {
     $('#llistat_historic ul').empty();
 }
 
 //Append history to right history Proposals menu
-function append_hist(name, on="execucio", metode="append_chart") {
+//function append_hist(name, on="execucio", metode="append_chart") {
+function append_hist(name, on, metode) {
+
+    if (typeof(on) == undefined) on="execucio";
+    if (typeof(metode) == undefined) metode = "append_chart";
+
 
     $('#llistat_historic ul').append("<li><a id='" + name + "' href='javascript:"+ metode + "(\"#" + on + "\", \""+ name + "\");' draggable='true' ondragstart='drag(event)'>"
         + convert_date_to_title(name,1)+"</a></li>");
@@ -95,22 +99,11 @@ function go_to_div (div) {
 
 //Validate paginator UI
 function validatePaginator(current,max) {
-    if (current==max) {
-        $("#nextPage").hide();
-        $("#prevPage").show();
-    }
+    // Review prevPage
+    (current == 1) ? $("#prevPage").hide() : $("#prevPage").show();
 
-    else if (current==1) {
-        $("#nextPage").show();
-        $("#prevPage").hide();
-    }
-
-    else {
-        $("#nextPage").show();
-        $("#prevPage").show();
-    }
-
-
+    // Review nextPage
+    (current<max) ? $("#nextPage").show() : $("#nextPage").hide();
 }
 
 //Increase Pager
