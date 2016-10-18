@@ -121,6 +121,17 @@
 */
 
     $(document).ready(function () {
+        $token = $.cookie('token');
+
+        if ($token == undefined)
+            get_bearer();
+
+        test_proposals()
+
+        $auth = 'Bearer ' + $token;
+
+        //test_proposals($token);
+
         get_proposals(true);
         div_follow_scroll("menu_propostes");
     });

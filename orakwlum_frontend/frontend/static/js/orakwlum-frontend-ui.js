@@ -15,7 +15,8 @@ $.urlParam = function(name){
     }
 }
 
-var max_elements = 6;
+
+var max_elements = 8;
 var currentPage = $.urlParam("page");
 var maxPage = currentPage;
 
@@ -46,6 +47,7 @@ function append_hist(name, on, metode) {
 
 //From a string like "160401_160402" convert it to a Chart Title
 function convert_date_to_title (string, lite) {
+    return string;
     //Lite week days (abreviated version)
     days_week = (lite)?days_in_week_lite:days_in_week;
 
@@ -99,8 +101,21 @@ function go_to_div (div) {
 
 //Validate paginator UI
 function validatePaginator(current,max) {
-    // Review prevPage
-    (current == 1) ? $("#prevPage").hide() : $("#prevPage").show();
+    if (current==max) {
+        $("#nextPage").hide();
+        $("#prevPage").show();
+    }
+
+    else if (current==1) {
+        $("#nextPage").show();
+        $("#prevPage").hide();
+    }
+
+    else {
+        $("#nextPage").show();
+        $("#prevPage").show();
+    }
+
 
     // Review nextPage
     (current<max) ? $("#nextPage").show() : $("#nextPage").hide();

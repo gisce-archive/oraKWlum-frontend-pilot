@@ -15,24 +15,27 @@ function create_chart_multiarea (nom, scenarios, div) {
 function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
 
     var min=null, max=0;
-    var data_scenarios  = new d3.range(0,scenarios.length).map(function(d,i) {
-        scenario = scenarios[i];
+    var data_scenarios  = new d3.range(0,scenarios.prediction.length).map(function(d,i) {
+        scenario = scenarios.prediction[i];
+        day = scenarios.days_list[i];
 
         return {
             area: area,
             strokeWidth: 2,
             classed: 'dashed',
             key: scenario['name'],
-            values: new d3.range(0,scenario['prediction'].length).map( function(f,j) {
-                value = scenario['prediction'][j]['sum_consumption_proposal'];
+            values: new d3.range(0,scenario['consumption'].length).map( function(f,j) {
+                value = scenario['consumption'][j];
 
                 if (!min)  min=value;  //take the first value of the current scope as a min
 
-                hour = new Date(scenario['prediction'][j]['_id']); //.replace("GMT","UTC"));
+                hour = new Date(day + " " + (j) + ":00"); //.replace("GMT","UTC"));
                 hour = new Date(hour - (2 * 60 *60*1000));  //localtime to UTC
 
                 min = Math.min(min, value);
                 max = Math.max(max, value);
+
+                console.log(hour, value, min, max);
 
                 return {
                     y: value,
@@ -41,6 +44,9 @@ function create_chart_multiline (nom, scenarios, div, area, removeAxis) {
             })
         };
     });
+
+
+    console.dir(data_scenarios);
 
     var chart;
 
