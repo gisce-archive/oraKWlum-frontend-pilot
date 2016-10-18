@@ -11,10 +11,9 @@ from flask import Flask, render_template, request
 
 
 class Frontend(object):
-    PORT = 8000
+    PORT = 80
 
     app = Flask(__name__)
-
 
     #Handler.extensions_map.update({
     #    '.json': 'application/x-web-app-manifest+json',
@@ -37,7 +36,15 @@ class Frontend(object):
             ## INDEX
             @self.app.route('/')
             def index():
-                return dashboard()
+                return proposta_ultim()
+                #return dashboard()
+
+
+
+            ## REACT
+            @self.app.route('/react/')
+            def react():
+                return render_template('layout_react.html')
 
 
             ## DASHBOARD

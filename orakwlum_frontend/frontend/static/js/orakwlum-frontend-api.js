@@ -25,7 +25,11 @@ if (!currentPage)
 
 //Fetch all proposals and initializates the right history menu
 //  If main execucion -> autoloads the last execution on main section
-function get_proposals(setMain, on="execucio", tipus="chart"){
+//function get_proposals(setMain, on="execucio", tipus="chart"){
+function get_proposals(setMain, on, tipus){
+
+    if (typeof(on) == undefined) on="execucio";
+    if (typeof(tipus) == undefined) tipus="chart";
 
     //set action create or append
     metode = (on == "execucio_ultima")? "create_":"append_";
@@ -62,7 +66,7 @@ function get_proposals(setMain, on="execucio", tipus="chart"){
                 append_hist(value.name,  on, metode);
             });
 
-            maxPage = (Math.round(data._meta.total/max_elements));
+            maxPage = (Math.ceil(data._meta.total/max_elements));
 
             validatePaginator(currentPage, maxPage);
 
@@ -124,9 +128,10 @@ function get_constructor(type, div, child, last){
 }
 
 function append_element(parentDiv, last, tipuss){
+    if (typeof(tipuss) == "undefined") return;
 
     //assert tipus array
-    if (typeof(tipuss) != Array) {
+    if (typeof(tipuss) != "Array") {
         tipuss = tipuss.replace(/ /g,'');
         tipuss = tipuss.split(',');
     }
